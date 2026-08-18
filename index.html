@@ -1,0 +1,687 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>中学地理 一問一答71</title>
+<style>
+  :root {
+    --ground: #ECEFE8;
+    --surface: #F8FAF5;
+    --surface-2: #E3E8DD;
+    --ink: #1B2420;
+    --ink-soft: #57635C;
+    --line: #D0D7C9;
+    --accent: #14524B;
+    --accent-ink: #F8FAF5;
+    --accent-soft: #DAE6E1;
+    --contour: #9A5F27;
+    --ok: #2C6E49;
+    --ok-soft: #DCEBE0;
+    --ng: #A33A2A;
+    --ng-soft: #F1DED9;
+    --radius: 10px;
+    --font-display: "Yu Mincho", YuMincho, "Hiragino Mincho ProN", "Noto Serif JP", serif;
+    --font-body: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", system-ui, sans-serif;
+    --font-num: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101614;
+      --surface: #19201D;
+      --surface-2: #222B27;
+      --ink: #E7ECE4;
+      --ink-soft: #9AA79F;
+      --line: #2D3833;
+      --accent: #6FC3B4;
+      --accent-ink: #0E1614;
+      --accent-soft: #1D302C;
+      --contour: #D39355;
+      --ok: #74C48D;
+      --ok-soft: #1C2E23;
+      --ng: #E28E7C;
+      --ng-soft: #33201C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #101614;
+    --surface: #19201D;
+    --surface-2: #222B27;
+    --ink: #E7ECE4;
+    --ink-soft: #9AA79F;
+    --line: #2D3833;
+    --accent: #6FC3B4;
+    --accent-ink: #0E1614;
+    --accent-soft: #1D302C;
+    --contour: #D39355;
+    --ok: #74C48D;
+    --ok-soft: #1C2E23;
+    --ng: #E28E7C;
+    --ng-soft: #33201C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1.25rem 1.1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: 100vh;
+  }
+
+  .screen { display: flex; flex-direction: column; gap: 1.5rem; }
+  .screen[hidden] { display: none; }
+
+  /* ---- 見出し ---- */
+  .masthead { display: flex; flex-direction: column; gap: .35rem; }
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--contour);
+    font-family: var(--font-num);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+
+  /* ---- 設定ブロック ---- */
+  .field { display: flex; flex-direction: column; gap: .6rem; }
+  .field > .label {
+    font-size: .78rem;
+    letter-spacing: .12em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: .35rem;
+  }
+  .choices { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+  .chip {
+    font: inherit;
+    font-size: .88rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: .42rem .9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: baseline;
+    gap: .4rem;
+  }
+  .chip .count { font-family: var(--font-num); font-size: .78rem; color: var(--ink-soft); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .chip[aria-pressed="true"] .count { color: var(--accent-ink); opacity: .75; }
+  .chip:disabled { opacity: .4; cursor: default; }
+
+  /* ---- ボタン ---- */
+  .btn {
+    font: inherit;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: .85rem 1rem;
+    cursor: pointer;
+    width: 100%;
+  }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn.small { font-size: .85rem; padding: .55rem .9rem; width: auto; }
+  .btn-row { display: flex; gap: .6rem; }
+  .btn-row > * { flex: 1; }
+
+  button:focus-visible, .chip:focus-visible {
+    outline: 2px solid var(--contour);
+    outline-offset: 2px;
+  }
+
+  /* ---- 出題画面 ---- */
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    font-size: .78rem;
+    color: var(--ink-soft);
+  }
+  .bar .cat { letter-spacing: .1em; }
+  .bar .pos { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+  .track { height: 3px; background: var(--surface-2); position: relative; }
+  .track .fill { height: 100%; background: var(--accent); transition: width .25s ease; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .qnum {
+    font-family: var(--font-num);
+    font-size: .78rem;
+    color: var(--contour);
+    letter-spacing: .1em;
+  }
+  .qtext {
+    font-family: var(--font-display);
+    font-size: 1.28rem;
+    line-height: 1.85;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .answer {
+    border-top: 1px dashed var(--line);
+    padding-top: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--accent);
+    letter-spacing: .03em;
+    animation: rise .22s ease-out;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(.35rem); } to { opacity: 1; transform: none; } }
+
+  .options { display: flex; flex-direction: column; gap: .55rem; }
+  .option {
+    font: inherit;
+    text-align: left;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: .8rem .95rem;
+    cursor: pointer;
+    display: flex;
+    gap: .7rem;
+    align-items: baseline;
+  }
+  .option .mark { font-family: var(--font-num); color: var(--ink-soft); font-size: .8rem; }
+  .option.is-ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .option.is-ng { background: var(--ng-soft); border-color: var(--ng); color: var(--ng); }
+  .option:disabled { cursor: default; }
+
+  .judge { font-size: .9rem; display: flex; align-items: center; gap: .5rem; }
+  .judge.ok { color: var(--ok); }
+  .judge.ng { color: var(--ng); }
+
+  /* ---- 結果画面 ---- */
+  .score {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    font-family: var(--font-num);
+  }
+  .score .big { font-size: 3.2rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .score .sub { color: var(--ink-soft); font-size: .9rem; }
+
+  .review { display: flex; flex-direction: column; gap: .1rem; }
+  .review .row {
+    display: flex;
+    gap: .8rem;
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: .9rem;
+  }
+  .review .row .n { font-family: var(--font-num); color: var(--contour); font-size: .78rem; padding-top: .25rem; }
+  .review .row .q { flex: 1; color: var(--ink-soft); }
+  .review .row .a { font-family: var(--font-display); color: var(--ink); white-space: nowrap; }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: .9rem;
+  }
+  .stats b { font-family: var(--font-num); font-size: 1.05rem; color: var(--ink); font-weight: 500; }
+  .stats .cell { display: flex; flex-direction: column; }
+  .linkish {
+    font: inherit;
+    font-size: .8rem;
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    align-self: flex-start;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ホーム -->
+  <section class="screen" id="home">
+    <header class="masthead">
+      <div class="eyebrow">Chiri 71</div>
+      <h1>中学地理 一問一答</h1>
+      <p class="lede">重要語句一問一答 NEW〈夏休みver〉全71問。範囲とやり方を選んで始めます。</p>
+    </header>
+
+    <div class="field">
+      <div class="label">はんい</div>
+      <div class="choices" id="rangeChoices"></div>
+    </div>
+
+    <div class="field">
+      <div class="label">出題数</div>
+      <div class="choices" id="countChoices"></div>
+    </div>
+
+    <div class="field">
+      <div class="label">やり方</div>
+      <div class="choices" id="modeChoices">
+        <button class="chip" data-mode="flash" aria-pressed="true">答えを思い出す</button>
+        <button class="chip" data-mode="quiz" aria-pressed="false">4つから選ぶ</button>
+      </div>
+    </div>
+
+    <button class="btn" id="startBtn">はじめる</button>
+
+    <div class="stats" id="homeStats"></div>
+  </section>
+
+  <!-- 出題 -->
+  <section class="screen" id="play" hidden>
+    <div class="bar">
+      <span class="cat" id="playCat"></span>
+      <span class="pos" id="playPos"></span>
+    </div>
+    <div class="track"><div class="fill" id="playFill" style="width:0%"></div></div>
+
+    <div class="card">
+      <div class="qnum" id="playNum"></div>
+      <p class="qtext" id="playQ"></p>
+      <div id="playAnswer"></div>
+      <div class="options" id="playOptions"></div>
+    </div>
+
+    <div id="playControls"></div>
+    <button class="linkish" id="quitBtn">やめてホームにもどる</button>
+  </section>
+
+  <!-- 結果 -->
+  <section class="screen" id="result" hidden>
+    <header class="masthead">
+      <div class="eyebrow">Result</div>
+      <h1 id="resultTitle">おつかれさま</h1>
+    </header>
+
+    <div class="score">
+      <span class="big" id="scoreBig">0</span>
+      <span class="sub" id="scoreSub"></span>
+    </div>
+
+    <div class="field" id="missBlock">
+      <div class="label">まちがえた問題</div>
+      <div class="review" id="missList"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="againBtn">まちがえた問題をもう一度</button>
+    </div>
+    <button class="btn ghost" id="homeBtn">ホームにもどる</button>
+  </section>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {n:1,c:'A',q:'周りを海に囲まれている国',a:'島国'},
+  {n:2,c:'A',q:'周りをすべて陸地に囲まれている国',a:'内陸国'},
+  {n:3,c:'A',q:'国と国の境界のこと。',a:'国境'},
+  {n:4,c:'A',q:'緯度0度の線のこと。',a:'赤道'},
+  {n:5,c:'A',q:'経度0度の線のこと。',a:'本初子午線'},
+  {n:6,c:'A',q:'地球をほぼその形のまま小さくした模型のこと。距離、面積、形、方位などを正しく表している。',a:'地球儀'},
+  {n:7,c:'A',q:'情報を正しく一度には表せないが、持ち運びに便利で、世界全体を見渡せる図。用途に合わせて様々な種類がある。',a:'世界地図'},
+  {n:8,c:'A',q:'その地域の標準時の基準となる経線。',a:'標準時子午線'},
+  {n:9,c:'A',q:'ほぼ180度の経線に沿って定められた、日付を決める基準となる線。',a:'日付変更線'},
+  {n:10,c:'A',q:'領域のうち、陸地の部分のこと。',a:'領土'},
+  {n:11,c:'A',q:'領域のうち、海の部分のこと。',a:'領海'},
+  {n:12,c:'A',q:'領域のうち、領土と領海の上空の部分。',a:'領空'},
+  {n:13,c:'A',q:'日本の排他的経済水域の海岸線からの範囲（何海里以内か）。',a:'200海里以内'},
+  {n:14,c:'A',q:'日本の領海の海岸線からの範囲（何海里以内か）。',a:'12海里以内'},
+  {n:15,c:'A',q:'日本の国土面積は約何万km²か。',a:'約38万km²'},
+  {n:16,c:'A',q:'各国が守るべき、国同士の関係を定めた法。',a:'国際法'},
+  {n:17,c:'A',q:'日本固有の領土だが、ロシアが不法に占拠している島々。',a:'北方領土'},
+  {n:18,c:'A',q:'日本固有の領土だが、韓国が不法に占拠している島。',a:'竹島'},
+  {n:19,c:'A',q:'日本固有の領土で、領有権の問題もないが、中国船がたびたび領海に不法侵入する諸島。',a:'尖閣諸島'},
+  {n:20,c:'A',q:'日本の北端の島',a:'択捉島'},
+  {n:21,c:'A',q:'日本の東端の島',a:'南鳥島'},
+  {n:22,c:'A',q:'日本の西端の島',a:'与那国島'},
+  {n:23,c:'A',q:'日本の南端の島',a:'沖ノ鳥島'},
+
+  {n:24,c:'B',q:'一年中、気温が高い気候帯',a:'熱帯'},
+  {n:25,c:'B',q:'降水量が少ない気候帯',a:'乾燥帯'},
+  {n:26,c:'B',q:'温暖で四季がはっきりしている気候帯',a:'温帯'},
+  {n:27,c:'B',q:'夏が短く、冬の寒さが厳しい気候帯',a:'亜寒帯（冷帯）'},
+  {n:28,c:'B',q:'気温が低く、樹木がほとんど育たない気候帯',a:'寒帯'},
+  {n:29,c:'B',q:'熱帯のうち、一年中雨が多く、気温が高い気候。',a:'熱帯雨林気候'},
+  {n:30,c:'B',q:'熱帯のうち、雨季と乾季がはっきりと分かれている気候。',a:'サバナ気候'},
+  {n:31,c:'B',q:'乾燥帯のうち、非常に雨が少なく、広大な砂漠が広がる気候。',a:'砂漠気候'},
+  {n:32,c:'B',q:'乾燥帯のうち、少しだけ雨が降り、草原が広がる気候。',a:'ステップ気候'},
+  {n:33,c:'B',q:'温帯のうち、冬と夏の気温差が大きく、1年を通して降水量が多い気候。',a:'温暖湿潤気候'},
+  {n:34,c:'B',q:'温帯のうち、偏西風や暖流の影響を受けて1年を通して気温と降水量の差が小さい気候。',a:'西岸海洋性気候'},
+  {n:35,c:'B',q:'温帯のうち、冬に比較的雨が多く、夏に雨が極端に少なく乾燥する気候。',a:'地中海性気候'},
+  {n:36,c:'B',q:'亜寒帯（冷帯）のうち、短い夏と寒さの厳しい冬があり、夏と冬の気温差が大きい気候。',a:'亜寒帯気候'},
+  {n:37,c:'B',q:'寒帯のうち、1年中寒さが厳しく、樹木が育たない地域で、夏の間だけ、地表の氷がとけ、コケ類が広がる気候。',a:'ツンドラ気候'},
+  {n:38,c:'B',q:'寒帯のうち、1年中氷と雪に覆われる気候。',a:'氷雪気候'},
+
+  {n:39,c:'C',q:'熱帯地方で午後から夕方にかけて発生する、激しい雨を伴う強風',a:'スコール'},
+  {n:40,c:'C',q:'熱帯に見られる、背の高い樹木がうっそうとしげった森林',a:'熱帯林'},
+  {n:41,c:'C',q:'乾燥した地域の中でも湧き水や井戸があって水が得られる場所',a:'オアシス'},
+  {n:42,c:'C',q:'農作物に水を与えるために、河川や湖などから水路を通して引き、農地を潤すこと。',a:'かんがい'},
+  {n:43,c:'C',q:'草や水を求めて、季節に応じて移動しながら家畜を飼育すること。',a:'遊牧'},
+  {n:44,c:'C',q:'ユーラシア大陸のシベリアなどの、夏と冬の気温の差が大きい地域に広がる針葉樹の森林',a:'タイガ'},
+  {n:45,c:'C',q:'シベリアでみられる、1年中凍ったままの土',a:'永久凍土'},
+  {n:46,c:'C',q:'リャマなどの家畜を牧草地に放し飼いにして飼育すること。',a:'放牧'},
+  {n:47,c:'C',q:'インドで大部分の人々に信仰されてきている宗教',a:'ヒンドゥー教'},
+  {n:48,c:'C',q:'ヒンドゥー教徒たちで受け継がれてきた、職業や結婚の範囲を限定するなどの制度',a:'カースト'},
+  {n:49,c:'C',q:'タイで最も多く信仰されている宗教',a:'仏教'},
+  {n:50,c:'C',q:'夏は海洋から大陸へ、冬は大陸から海洋へ向かって吹く、季節によって風向きが変わる風。',a:'季節風（モンスーン）'},
+
+  {n:51,c:'D',q:'熱帯のサバナ気候でみられる、1年のうちで、降水量の多い時期のこと',a:'雨季'},
+  {n:52,c:'D',q:'熱帯のサバナ気候でみられる、1年のうちで、降水量の少ない時期のこと',a:'乾季'},
+  {n:53,c:'D',q:'インドのガンジス川流域や中国南部、東南アジアの平野などで行われている稲を栽培すること。',a:'稲作'},
+  {n:54,c:'D',q:'インド西部や中国北部などで行われている、小麦やとうもろこしなどを栽培すること。',a:'畑作'},
+  {n:55,c:'D',q:'中国が人口増加を抑えるために行っていた、一組の夫婦の子どもを1人に制限する政策',a:'一人っ子政策'},
+  {n:56,c:'D',q:'中国が経済発展のために、外国企業を優遇した特別な地区。',a:'経済特区'},
+  {n:57,c:'D',q:'世界中に様々な工業製品を輸出するようになった中国の呼び名。',a:'世界の工場'},
+  {n:58,c:'D',q:'韓国で使われている文字。',a:'ハングル'},
+  {n:59,c:'D',q:'韓国の文化に影響を与えている、祖先や年長者を大切にする教え。',a:'儒教'},
+  {n:60,c:'D',q:'一極集中が進んでいる、韓国の首都',a:'ソウル'},
+  {n:61,c:'D',q:'中国を出て、世界各地に移住した中国系の人々のこと。',a:'華人'},
+  {n:62,c:'D',q:'同じ土地で、一年に2回、同じ作物をつくること。',a:'二期作'},
+  {n:63,c:'D',q:'東南アジアでみられる、輸出用の商品作物を栽培する大農園',a:'プランテーション'},
+  {n:64,c:'D',q:'東南アジアの国のほとんどが加盟している、東南アジア諸国連合の略称（アルファベット）',a:'ASEAN'},
+  {n:65,c:'D',q:'人口が増えた大都市で、貧しい人々が集まる生活環境の悪い住宅',a:'スラム'},
+  {n:66,c:'D',q:'インターネットなどの普及により成長している、情報や通信技術を用いた産業',a:'ICT（情報通信技術）産業'},
+  {n:67,c:'D',q:'インドのデカン高原で栽培が盛んな農産物',a:'綿花'},
+  {n:68,c:'D',q:'原油や天然ガスなど、液体や気体を長距離輸送するための管状の施設。',a:'パイプライン'},
+  {n:69,c:'D',q:'西アジアを中心とした産油国の利益を守るために結成された国際組織。',a:'OPEC（石油輸出国機構）'},
+  {n:70,c:'D',q:'埋蔵量が非常に少ない、ニッケル・コバルト・クロムなどの希少金属',a:'レアメタル'},
+  {n:71,c:'D',q:'戦争や災害によって、今まで住んでいた国を離れなければならなくなった人々。',a:'難民'}
+];
+
+const CATS = {
+  A: '世界と日本のすがた',
+  B: '世界の気候',
+  C: 'くらしと宗教',
+  D: 'アジア州'
+};
+
+const KEY = 'chiri71.v1';
+const $ = id => document.getElementById(id);
+
+let store = load();
+let setting = { range: 'all', count: 10, mode: 'flash' };
+let session = null;
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return { stats: {} };
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+}
+function stat(n) {
+  if (!store.stats[n]) store.stats[n] = { ok: 0, ng: 0, streak: 0 };
+  return store.stats[n];
+}
+function isWeak(n) {
+  const s = store.stats[n];
+  return !!s && s.ng > 0 && s.streak < 2;
+}
+function weakList() {
+  return QUESTIONS.filter(q => isWeak(q.n));
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pool(range) {
+  if (range === 'all') return QUESTIONS.slice();
+  if (range === 'weak') return weakList();
+  return QUESTIONS.filter(q => q.c === range);
+}
+
+/* ---------- ホーム ---------- */
+function renderHome() {
+  const ranges = [
+    { key: 'all', label: '全部' },
+    { key: 'A', label: CATS.A },
+    { key: 'B', label: CATS.B },
+    { key: 'C', label: CATS.C },
+    { key: 'D', label: CATS.D },
+    { key: 'weak', label: '苦手だけ' }
+  ];
+  const rc = $('rangeChoices');
+  rc.innerHTML = '';
+  ranges.forEach(r => {
+    const n = pool(r.key).length;
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.setAttribute('aria-pressed', String(setting.range === r.key));
+    b.innerHTML = '<span>' + r.label + '</span><span class="count">' + n + '</span>';
+    b.disabled = n === 0;
+    b.onclick = () => { setting.range = r.key; renderHome(); };
+    rc.appendChild(b);
+  });
+
+  const max = pool(setting.range).length;
+  const cc = $('countChoices');
+  cc.innerHTML = '';
+  [10, 20, 'all'].forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = c === 'all' ? 'ぜんぶ（' + max + '問）' : c + '問';
+    b.disabled = c !== 'all' && max < c;
+    b.setAttribute('aria-pressed', String(setting.count === c));
+    b.onclick = () => { setting.count = c; renderHome(); };
+    cc.appendChild(b);
+  });
+  if (setting.count !== 'all' && max < setting.count) setting.count = 'all';
+
+  Array.from($('modeChoices').children).forEach(b => {
+    b.setAttribute('aria-pressed', String(b.dataset.mode === setting.mode));
+    b.onclick = () => { setting.mode = b.dataset.mode; renderHome(); };
+  });
+
+  const done = Object.keys(store.stats).length;
+  const totalOk = Object.values(store.stats).reduce((s, v) => s + v.ok, 0);
+  const totalNg = Object.values(store.stats).reduce((s, v) => s + v.ng, 0);
+  const rate = totalOk + totalNg ? Math.round(totalOk * 100 / (totalOk + totalNg)) : 0;
+  $('homeStats').innerHTML =
+    '<span class="cell">これまでの正答率<b>' + rate + '%</b></span>' +
+    '<span class="cell">やった問題<b>' + done + ' / 71</b></span>' +
+    '<span class="cell">苦手<b>' + weakList().length + '問</b></span>';
+  if (done) {
+    const reset = document.createElement('button');
+    reset.className = 'linkish';
+    reset.textContent = '記録を消す';
+    reset.onclick = () => {
+      if (confirm('これまでの正誤の記録を全部消します。よろしいですか？')) {
+        store = { stats: {} }; save(); renderHome();
+      }
+    };
+    $('homeStats').appendChild(reset);
+  }
+}
+
+/* ---------- 出題 ---------- */
+function show(screen) {
+  ['home', 'play', 'result'].forEach(id => { $(id).hidden = id !== screen; });
+  window.scrollTo(0, 0);
+}
+
+function start(list) {
+  session = { list: list, i: 0, miss: [], okCount: 0 };
+  show('play');
+  renderQuestion();
+}
+
+function startFromSetting() {
+  let list = shuffle(pool(setting.range));
+  if (setting.count !== 'all') list = list.slice(0, setting.count);
+  start(list);
+}
+
+function makeOptions(q) {
+  const same = QUESTIONS.filter(x => x.c === q.c && x.n !== q.n);
+  const others = shuffle(same).slice(0, 3).map(x => x.a);
+  while (others.length < 3) {
+    const pick = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)].a;
+    if (pick !== q.a && !others.includes(pick)) others.push(pick);
+  }
+  return shuffle(others.concat([q.a]));
+}
+
+function renderQuestion() {
+  const q = session.list[session.i];
+  $('playCat').textContent = CATS[q.c];
+  $('playPos').textContent = (session.i + 1) + ' / ' + session.list.length;
+  $('playFill').style.width = (session.i / session.list.length * 100) + '%';
+  $('playNum').textContent = 'No.' + q.n + (isWeak(q.n) ? '　苦手' : '');
+  $('playQ').textContent = q.q;
+  $('playAnswer').innerHTML = '';
+  $('playOptions').innerHTML = '';
+  $('playControls').innerHTML = '';
+
+  if (setting.mode === 'flash') renderFlash(q);
+  else renderQuiz(q);
+}
+
+function renderFlash(q) {
+  const reveal = document.createElement('button');
+  reveal.className = 'btn';
+  reveal.textContent = '答えを見る';
+  reveal.onclick = () => {
+    $('playAnswer').innerHTML = '<div class="answer">' + q.a + '</div>';
+    const row = document.createElement('div');
+    row.className = 'btn-row';
+    const ok = document.createElement('button');
+    ok.className = 'btn';
+    ok.textContent = '○ できた';
+    ok.onclick = () => grade(q, true);
+    const ng = document.createElement('button');
+    ng.className = 'btn ghost';
+    ng.textContent = '× まちがえた';
+    ng.onclick = () => grade(q, false);
+    row.append(ok, ng);
+    $('playControls').innerHTML = '';
+    $('playControls').appendChild(row);
+  };
+  $('playControls').appendChild(reveal);
+}
+
+function renderQuiz(q) {
+  const opts = makeOptions(q);
+  const box = $('playOptions');
+  opts.forEach((text, idx) => {
+    const b = document.createElement('button');
+    b.className = 'option';
+    b.innerHTML = '<span class="mark">' + (idx + 1) + '</span><span>' + text + '</span>';
+    b.onclick = () => {
+      const correct = text === q.a;
+      Array.from(box.children).forEach((el, i) => {
+        el.disabled = true;
+        if (opts[i] === q.a) el.classList.add('is-ok');
+        else if (i === idx) el.classList.add('is-ng');
+      });
+      if (!correct && navigator.vibrate) navigator.vibrate(40);
+      const judge = document.createElement('div');
+      judge.className = 'judge ' + (correct ? 'ok' : 'ng');
+      judge.textContent = correct ? '○ 正解' : '× 正解は「' + q.a + '」';
+      const next = document.createElement('button');
+      next.className = 'btn';
+      next.textContent = session.i + 1 < session.list.length ? '次の問題へ' : '結果を見る';
+      next.onclick = () => grade(q, correct);
+      $('playControls').append(judge, next);
+      next.focus();
+    };
+    box.appendChild(b);
+  });
+}
+
+function grade(q, correct) {
+  const s = stat(q.n);
+  if (correct) { s.ok++; s.streak++; session.okCount++; }
+  else { s.ng++; s.streak = 0; session.miss.push(q); }
+  save();
+  session.i++;
+  if (session.i < session.list.length) renderQuestion();
+  else renderResult();
+}
+
+/* ---------- 結果 ---------- */
+function renderResult() {
+  show('result');
+  const total = session.list.length;
+  const ok = session.okCount;
+  const rate = Math.round(ok * 100 / total);
+  $('scoreBig').textContent = rate + '%';
+  $('scoreSub').textContent = total + '問中 ' + ok + '問 正解';
+  $('resultTitle').textContent = rate === 100 ? '全問正解！' : (rate >= 80 ? 'いい調子' : 'もう一周いこう');
+
+  const list = $('missList');
+  list.innerHTML = '';
+  if (session.miss.length === 0) {
+    $('missBlock').hidden = true;
+    $('againBtn').hidden = true;
+  } else {
+    $('missBlock').hidden = false;
+    $('againBtn').hidden = false;
+    $('againBtn').textContent = 'まちがえた' + session.miss.length + '問をもう一度';
+    session.miss.forEach(q => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = '<span class="n">' + q.n + '</span><span class="q">' + q.q + '</span><span class="a">' + q.a + '</span>';
+      list.appendChild(row);
+    });
+  }
+}
+
+/* ---------- 起動 ---------- */
+$('startBtn').onclick = startFromSetting;
+$('quitBtn').onclick = () => { renderHome(); show('home'); };
+$('homeBtn').onclick = () => { renderHome(); show('home'); };
+$('againBtn').onclick = () => start(shuffle(session.miss));
+
+renderHome();
+</script>
