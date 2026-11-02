@@ -1,0 +1,783 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>中1理科 化学 一問一答</title>
+<style>
+  :root {
+    --ground: #F2F8F7;
+    --surface: #FFFFFF;
+    --surface-2: #E3EFEE;
+    --ink: #1B2420;
+    --ink-soft: #57635C;
+    --line: #D2E2E0;
+    --accent: #0E7C7B;
+    --accent-ink: #F8FAF5;
+    --accent-soft: #D6F0EF;
+    --contour: #C9682F;
+    --ok: #1E8A52;
+    --ok-soft: #D6F2E0;
+    --ng: #C7452F;
+    --ng-soft: #FCE2DC;
+    --radius: 10px;
+    --font-display: "Yu Mincho", YuMincho, "Hiragino Mincho ProN", "Noto Serif JP", serif;
+    --font-body: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", system-ui, sans-serif;
+    --font-num: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101614;
+      --surface: #19201D;
+      --surface-2: #222B27;
+      --ink: #E7ECE4;
+      --ink-soft: #9AA79F;
+      --line: #2D3833;
+      --accent: #6FC3B4;
+      --accent-ink: #0E1614;
+      --accent-soft: #1D302C;
+      --contour: #D39355;
+      --ok: #74C48D;
+      --ok-soft: #1C2E23;
+      --ng: #E28E7C;
+      --ng-soft: #33201C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #101614;
+    --surface: #19201D;
+    --surface-2: #222B27;
+    --ink: #E7ECE4;
+    --ink-soft: #9AA79F;
+    --line: #2D3833;
+    --accent: #6FC3B4;
+    --accent-ink: #0E1614;
+    --accent-soft: #1D302C;
+    --contour: #D39355;
+    --ok: #74C48D;
+    --ok-soft: #1C2E23;
+    --ng: #E28E7C;
+    --ng-soft: #33201C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1.25rem 1.1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: 100vh;
+  }
+
+  .screen { display: flex; flex-direction: column; gap: 1.5rem; }
+  .screen[hidden] { display: none; }
+
+  /* ---- 見出し ---- */
+  .masthead { display: flex; flex-direction: column; gap: .35rem; }
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--contour);
+    font-family: var(--font-num);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+
+  /* ---- 設定ブロック ---- */
+  .field { display: flex; flex-direction: column; gap: .6rem; }
+  .field > .label {
+    font-size: .78rem;
+    letter-spacing: .12em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: .35rem;
+  }
+  .choices { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+  .chip {
+    font: inherit;
+    font-size: .88rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: .42rem .9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: baseline;
+    gap: .4rem;
+  }
+  .chip .count { font-family: var(--font-num); font-size: .78rem; color: var(--ink-soft); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .chip[aria-pressed="true"] .count { color: var(--accent-ink); opacity: .75; }
+  .chip:disabled { opacity: .4; cursor: default; }
+
+  /* ---- ボタン ---- */
+  .btn {
+    font: inherit;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: .85rem 1rem;
+    cursor: pointer;
+    width: 100%;
+  }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn.ghost.strong {
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    background: var(--surface);
+    font-weight: 600;
+  }
+  .btn.small { font-size: .85rem; padding: .55rem .9rem; width: auto; }
+  .btn-row { display: flex; gap: .6rem; }
+  .btn-row > * { flex: 1; }
+
+  button:focus-visible, .chip:focus-visible {
+    outline: 2px solid var(--contour);
+    outline-offset: 2px;
+  }
+
+  /* ---- 出題画面 ---- */
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    font-size: .78rem;
+    color: var(--ink-soft);
+  }
+  .bar .cat { letter-spacing: .1em; }
+  .bar .pos { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+  .track { height: 3px; background: var(--surface-2); position: relative; }
+  .track .fill { height: 100%; background: var(--accent); transition: width .25s ease; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .qnum {
+    font-family: var(--font-num);
+    font-size: .78rem;
+    color: var(--contour);
+    letter-spacing: .1em;
+  }
+  .qtext {
+    font-family: var(--font-display);
+    font-size: 1.28rem;
+    line-height: 1.85;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .answer {
+    border-top: 1px dashed var(--line);
+    padding-top: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: .03em;
+    animation: rise .22s ease-out;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(.35rem); } to { opacity: 1; transform: none; } }
+
+  .options { display: flex; flex-direction: column; gap: .55rem; }
+  .option {
+    font: inherit;
+    text-align: left;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: .8rem .95rem;
+    cursor: pointer;
+    display: flex;
+    gap: .7rem;
+    align-items: baseline;
+  }
+  .option .mark { font-family: var(--font-num); color: var(--ink-soft); font-size: .8rem; }
+  .option.is-ok {
+    background: var(--ok-soft);
+    border-color: var(--ok);
+    border-width: 2px;
+    color: var(--ok);
+    font-weight: 700;
+  }
+  .option.is-ng { background: var(--ng-soft); border-color: var(--ng); color: var(--ng); }
+  .option:disabled { cursor: default; }
+
+  .judge {
+    font-size: 1.05rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    flex-wrap: wrap;
+    padding: .8rem 1rem;
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+  }
+  .judge .big-mark { font-size: 1.75rem; line-height: 1; }
+  .judge .right { font-family: var(--font-display); font-size: 1.2rem; }
+  .judge.ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
+  .judge.ng { color: var(--ng); background: var(--ng-soft); border-color: var(--ng); }
+
+  /* ---- 結果画面 ---- */
+  .score {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    font-family: var(--font-num);
+  }
+  .score .big { font-size: 3.2rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .score .sub { color: var(--ink-soft); font-size: .9rem; }
+
+  .review { display: flex; flex-direction: column; gap: .1rem; }
+  .review .row {
+    display: grid;
+    grid-template-columns: 2.2rem 1fr;
+    gap: .25rem .6rem;
+    padding: .75rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: .9rem;
+  }
+  .review .row .n { font-family: var(--font-num); color: var(--contour); font-size: .78rem; grid-row: 1 / span 2; }
+  .review .row .q { color: var(--ink-soft); }
+  .review .row .a { font-family: var(--font-display); color: var(--accent); font-weight: 600; }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: .9rem;
+  }
+  .stats b { font-family: var(--font-num); font-size: 1.05rem; color: var(--ink); font-weight: 500; }
+  .stats .cell { display: flex; flex-direction: column; }
+  .linkish {
+    font: inherit;
+    font-size: .8rem;
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    align-self: flex-start;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ホーム -->
+  <section class="screen" id="home">
+    <header class="masthead">
+      <div class="eyebrow">Rika / Kagaku</div>
+      <h1>中1理科 化学</h1>
+      <p class="lede" id="homeLede"></p>
+    </header>
+
+    <div class="field">
+      <div class="label">はんい</div>
+      <div class="choices" id="rangeChoices"></div>
+    </div>
+
+    <div class="field">
+      <div class="label">出題数</div>
+      <div class="choices" id="countChoices"></div>
+    </div>
+
+    <div class="field">
+      <div class="label">やり方</div>
+      <div class="choices" id="modeChoices">
+        <button class="chip" data-mode="flash" aria-pressed="true">答えを思い出す</button>
+        <button class="chip" data-mode="quiz" aria-pressed="false">4つから選ぶ</button>
+      </div>
+    </div>
+
+    <button class="btn" id="startBtn">はじめる</button>
+
+    <div class="stats" id="homeStats"></div>
+  </section>
+
+  <!-- 出題 -->
+  <section class="screen" id="play" hidden>
+    <div class="bar">
+      <span class="cat" id="playCat"></span>
+      <span class="pos" id="playPos"></span>
+    </div>
+    <div class="track"><div class="fill" id="playFill" style="width:0%"></div></div>
+
+    <div class="card">
+      <div class="qnum" id="playNum"></div>
+      <p class="qtext" id="playQ"></p>
+      <div id="playAnswer"></div>
+      <div class="options" id="playOptions"></div>
+    </div>
+
+    <div id="playControls"></div>
+    <button class="btn ghost strong" id="quitBtn">ホームにもどる</button>
+  </section>
+
+  <!-- 結果 -->
+  <section class="screen" id="result" hidden>
+    <header class="masthead">
+      <div class="eyebrow">Result</div>
+      <h1 id="resultTitle">おつかれさま</h1>
+    </header>
+
+    <div class="score">
+      <span class="big" id="scoreBig">0</span>
+      <span class="sub" id="scoreSub"></span>
+    </div>
+
+    <div class="field" id="missBlock">
+      <div class="label">まちがえた問題</div>
+      <div class="review" id="missList"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="againBtn">まちがえた問題をもう一度</button>
+    </div>
+    <button class="btn ghost strong" id="homeBtn">ホームにもどる</button>
+  </section>
+
+</div>
+
+<script>
+/* 中1理科・化学分野の一問一答。
+   A・B = 11/2(月)のテスト範囲、C・D = 11/5(木)のテスト範囲。
+   記録は問題文をキーに保存しているので、あとで問題を足しても消えない。 */
+const RAW = [
+  {c:'A', q:'鉄・ガラス・紙のように、ものをつくっている材料に注目したときの呼び方。', a:'物質'},
+  {c:'A', q:'コップ・スプーンのように、形や大きさに注目したときの呼び方。', a:'物体'},
+  {c:'A', q:'炭素をふくみ、燃やすと二酸化炭素が発生する物質。', a:'有機物'},
+  {c:'A', q:'有機物以外の物質のこと。', a:'無機物'},
+  {c:'A', q:'有機物を燃やしたときに発生し、石灰水を白くにごらせる気体。', a:'二酸化炭素'},
+  {c:'A', q:'有機物を燃やしたときに、二酸化炭素のほかに発生するもの。', a:'水'},
+  {c:'A', q:'二酸化炭素があることを確かめるために使う液体。', a:'石灰水'},
+  {c:'A', q:'砂糖・デンプン・エタノール・プラスチックに共通する分類。', a:'有機物'},
+  {c:'A', q:'食塩・ガラス・鉄・水に共通する分類。', a:'無機物'},
+  {c:'A', q:'金属をみがいたときに現れる、特有のかがやき。', a:'金属光沢'},
+  {c:'A', q:'金属に共通する、電気を通しやすい性質。', a:'電気をよく通す'},
+  {c:'A', q:'金属に共通する、熱を伝えやすい性質。', a:'熱をよく伝える'},
+  {c:'A', q:'たたくとうすく広がる、金属の性質。', a:'展性'},
+  {c:'A', q:'引っぱると細くのびる、金属の性質。', a:'延性'},
+  {c:'A', q:'「磁石につく」は金属に共通する性質かどうか。', a:'共通ではない（鉄などの一部だけ）'},
+  {c:'A', q:'金属以外の物質のこと。', a:'非金属'},
+  {c:'A', q:'物質1cm³あたりの質量。', a:'密度'},
+  {c:'A', q:'密度を表す単位。', a:'g/cm³'},
+  {c:'A', q:'密度を求める式。', a:'密度＝質量÷体積'},
+  {c:'A', q:'液体に入れた物質が浮くのは、液体と比べて密度がどうであるときか。', a:'密度が小さいとき'},
+  {c:'A', q:'物質の種類を見分ける手がかりになる、物質ごとに決まった値。', a:'密度'},
+  {c:'A', q:'質量100g、体積50cm³の物質の密度。', a:'2g/cm³'},
+  {c:'A', q:'液体の体積をはかるときに使う、細長い目盛りつきの器具。', a:'メスシリンダー'},
+  {c:'A', q:'メスシリンダーの目盛りを読むときの目の位置。', a:'液面と同じ高さから真横に見る'},
+  {c:'A', q:'メスシリンダーは最小目盛りのどこまで読むか。', a:'最小目盛りの10分の1まで'},
+  {c:'A', q:'石油を原料としてつくられる、軽くて加工しやすい有機物。', a:'プラスチック'},
+  {c:'A', q:'ペットボトルに使われているプラスチックの略称。', a:'PET'},
+  {c:'A', q:'プラスチックに共通する性質を3つ。', a:'電気を通しにくい・さびない・軽い'},
+  {c:'A', q:'ガスバーナーで、空気の量を調節するねじ。', a:'空気調節ねじ（上のねじ）'},
+  {c:'A', q:'ガスバーナーの炎がオレンジ色のときにする操作。', a:'空気調節ねじを開いて空気を増やす'},
+  {c:'A', q:'ガスバーナーの正しい炎の色。', a:'青色'},
+
+  {c:'B', q:'空気中にもっとも多くふくまれている気体。', a:'窒素'},
+  {c:'B', q:'空気中にふくまれる窒素の体積の割合。', a:'約78%'},
+  {c:'B', q:'空気中にふくまれる酸素の体積の割合。', a:'約21%'},
+  {c:'B', q:'ものを燃やすはたらきがある気体。', a:'酸素'},
+  {c:'B', q:'酸素を発生させる方法。', a:'二酸化マンガンにうすい過酸化水素水を加える'},
+  {c:'B', q:'酸素の中に火のついた線香を入れるとどうなるか。', a:'線香が激しく燃える'},
+  {c:'B', q:'酸素の集め方。', a:'水上置換法'},
+  {c:'B', q:'二酸化炭素を発生させる方法。', a:'石灰石にうすい塩酸を加える'},
+  {c:'B', q:'二酸化炭素を石灰水に通すとどうなるか。', a:'白くにごる'},
+  {c:'B', q:'二酸化炭素の集め方。', a:'下方置換法（水上置換法でもよい）'},
+  {c:'B', q:'二酸化炭素が水に溶けた水溶液の名前。', a:'炭酸水'},
+  {c:'B', q:'すべての気体の中でもっとも軽い（密度が小さい）気体。', a:'水素'},
+  {c:'B', q:'水素を発生させる方法。', a:'亜鉛にうすい塩酸を加える'},
+  {c:'B', q:'水素に火を近づけるとどうなるか。', a:'音を立てて燃え、水ができる'},
+  {c:'B', q:'水素の集め方。', a:'水上置換法'},
+  {c:'B', q:'刺激臭があり、水に非常によく溶ける気体。', a:'アンモニア'},
+  {c:'B', q:'アンモニアの集め方。', a:'上方置換法'},
+  {c:'B', q:'アンモニアを上方置換法で集める理由。', a:'水に溶けやすく、空気より軽いから'},
+  {c:'B', q:'水に溶けにくい気体を集める方法。', a:'水上置換法'},
+  {c:'B', q:'水に溶けやすく、空気より重い気体を集める方法。', a:'下方置換法'},
+  {c:'B', q:'水に溶けやすく、空気より軽い気体を集める方法。', a:'上方置換法'},
+  {c:'B', q:'水上置換法のよいところ。', a:'空気が混じらず純粋な気体が集められる'},
+  {c:'B', q:'気体の集め方を決めるときに考える2つの性質。', a:'水への溶けやすさと空気と比べた重さ'},
+  {c:'B', q:'黄緑色で刺激臭があり、有毒な気体。', a:'塩素'},
+  {c:'B', q:'塩素のはたらき。', a:'殺菌作用と漂白作用'},
+  {c:'B', q:'酸素・水素・窒素に共通する色とにおい。', a:'無色・無臭'},
+  {c:'B', q:'アンモニアの噴水実験で水がふき上がる理由。', a:'アンモニアが水に溶けてフラスコ内の圧力が下がるから'},
+  {c:'B', q:'アンモニアが溶けた水溶液の性質。', a:'アルカリ性'},
+  {c:'B', q:'卵のからや貝がらにうすい塩酸を加えると発生する気体。', a:'二酸化炭素'},
+  {c:'B', q:'空気より密度が大きい（重い）気体の例を2つ。', a:'二酸化炭素と塩素'},
+  {c:'B', q:'気体を集めるとき、はじめに出てくる気体を使わない理由。', a:'管の中の空気が混じっているから'},
+
+  {c:'C', q:'水溶液で、水に溶けている物質のこと。', a:'溶質'},
+  {c:'C', q:'溶質を溶かしている液体のこと。', a:'溶媒'},
+  {c:'C', q:'溶質が溶媒に溶けた液全体のこと。', a:'溶液'},
+  {c:'C', q:'溶媒が水である溶液のこと。', a:'水溶液'},
+  {c:'C', q:'食塩水の溶質と溶媒。', a:'溶質は食塩、溶媒は水'},
+  {c:'C', q:'水溶液の見た目の特徴。', a:'透明である（色がついていてもよい）'},
+  {c:'C', q:'水溶液の濃さは場所によってどうなっているか。', a:'どこも同じ（均一）'},
+  {c:'C', q:'水溶液を長い時間置いておくとどうなるか。', a:'分かれずにそのまま（溶質は出てこない）'},
+  {c:'C', q:'溶液の質量を求める式。', a:'溶質の質量＋溶媒の質量'},
+  {c:'C', q:'質量パーセント濃度を求める式。', a:'溶質の質量÷溶液の質量×100'},
+  {c:'C', q:'水80gに食塩20gを溶かした水溶液の質量パーセント濃度。', a:'20%'},
+  {c:'C', q:'20%の食塩水200gにふくまれる食塩の質量。', a:'40g'},
+  {c:'C', q:'水100gに溶かすことのできる物質の限界の量。', a:'溶解度'},
+  {c:'C', q:'物質を限界まで溶かした水溶液。', a:'飽和水溶液'},
+  {c:'C', q:'溶解度と温度の関係を表したグラフ。', a:'溶解度曲線'},
+  {c:'C', q:'多くの固体で、温度を上げると溶解度はどうなるか。', a:'大きくなる'},
+  {c:'C', q:'温度を変えても溶解度がほとんど変わらない物質。', a:'塩化ナトリウム（食塩）'},
+  {c:'C', q:'温度によって溶解度が大きく変わる物質の例。', a:'硝酸カリウム'},
+  {c:'C', q:'水溶液から溶質を再び結晶として取り出すこと。', a:'再結晶'},
+  {c:'C', q:'再結晶の2つの方法。', a:'水溶液を冷やす・水を蒸発させる'},
+  {c:'C', q:'食塩水から食塩を取り出すのに適した方法。', a:'水を蒸発させる'},
+  {c:'C', q:'いくつかの平面で囲まれた、規則正しい形の固体。', a:'結晶'},
+  {c:'C', q:'液体と、溶けていない固体を分ける操作。', a:'ろ過'},
+  {c:'C', q:'ろ過をするときに液を伝わらせる道具。', a:'ガラス棒'},
+  {c:'C', q:'ろ過のとき、ろうとのあしはどうするか。', a:'ビーカーの内側につける'},
+  {c:'C', q:'ろ過で、ろ紙を通りぬけるもの。', a:'ろ紙の穴より小さい粒（溶けているもの）'},
+  {c:'C', q:'物質が水に溶けたとき、粒はどうなっているか。', a:'目に見えないほど小さくなり均一に散らばる'},
+  {c:'C', q:'砂糖を水に溶かしたとき、全体の質量はどうなるか。', a:'溶かす前の合計と変わらない'},
+  {c:'C', q:'コーヒーシュガーを水に入れて長く置くと、色はどうなるか。', a:'全体が同じ色になる'},
+  {c:'C', q:'硝酸カリウムの飽和水溶液を冷やすと出てくるもの。', a:'硝酸カリウムの結晶'},
+
+  {c:'D', q:'物質がとる3つの姿。', a:'固体・液体・気体'},
+  {c:'D', q:'温度によって物質の姿が変わること。', a:'状態変化'},
+  {c:'D', q:'状態変化で変化するもの。', a:'体積'},
+  {c:'D', q:'状態変化で変化しないもの。', a:'質量'},
+  {c:'D', q:'状態変化で、物質の種類は変わるか。', a:'変わらない（別の物質にはならない）'},
+  {c:'D', q:'ふつう、固体から液体、気体へと変化すると体積はどうなるか。', a:'大きくなる'},
+  {c:'D', q:'水が氷になるときの体積の変化。', a:'大きくなる（水だけの例外）'},
+  {c:'D', q:'固体がとけて液体になること。', a:'融解'},
+  {c:'D', q:'液体が固体になること。', a:'凝固'},
+  {c:'D', q:'液体が気体になること。', a:'蒸発（気化）'},
+  {c:'D', q:'気体が液体になること。', a:'凝縮（液化）'},
+  {c:'D', q:'固体が液体にならずに直接気体になること。', a:'昇華'},
+  {c:'D', q:'固体がとけて液体に変わるときの温度。', a:'融点'},
+  {c:'D', q:'液体が沸騰して気体に変わるときの温度。', a:'沸点'},
+  {c:'D', q:'水の融点。', a:'0℃'},
+  {c:'D', q:'水の沸点。', a:'100℃'},
+  {c:'D', q:'1種類の物質だけでできているもの。', a:'純粋な物質'},
+  {c:'D', q:'2種類以上の物質が混ざり合ったもの。', a:'混合物'},
+  {c:'D', q:'純粋な物質の融点や沸点の特徴。', a:'物質ごとに決まっていて一定'},
+  {c:'D', q:'混合物の融点や沸点の特徴。', a:'決まった温度にならない'},
+  {c:'D', q:'状態変化のとき、粒の数はどうなるか。', a:'変わらない'},
+  {c:'D', q:'温度が上がると、粒の動きと間隔はどうなるか。', a:'動きが激しくなり間隔が広がる'},
+  {c:'D', q:'固体のときの粒のようす。', a:'規則正しく並んでその場で振動している'},
+  {c:'D', q:'気体のときの粒のようす。', a:'自由に飛び回っている'},
+  {c:'D', q:'液体を沸騰させ、出た気体を冷やして再び液体として取り出す方法。', a:'蒸留'},
+  {c:'D', q:'蒸留で混合物を分けられる理由。', a:'物質によって沸点がちがうから'},
+  {c:'D', q:'水とエタノールの混合物を加熱したとき、先に多く出てくる物質。', a:'エタノール'},
+  {c:'D', q:'エタノールの沸点。', a:'約78℃'},
+  {c:'D', q:'蒸留の実験で使う、枝のついたフラスコ。', a:'枝つきフラスコ'},
+  {c:'D', q:'蒸留の実験で、温度計の球の部分を置く位置。', a:'枝の付け根'},
+  {c:'D', q:'液体を加熱するとき、突沸を防ぐために入れるもの。', a:'沸騰石'}
+];
+
+const QUESTIONS = RAW.map((x, i) => ({ n: i + 1, c: x.c, q: x.q, a: x.a }));
+
+const CATS = {
+  A: '身のまわりの物質とその性質',
+  B: '気体の性質',
+  C: '水溶液の性質',
+  D: '物質の姿と状態変化'
+};
+
+/* テスト日ごとのまとめ。日付が過ぎたら中身を書きかえる。 */
+const TESTS = {
+  test1: { label: '11/2のテスト範囲', cats: ['A', 'B'] },
+  test2: { label: '11/5のテスト範囲', cats: ['C', 'D'] }
+};
+
+const KEY = 'rika-kagaku.v1';
+const $ = id => document.getElementById(id);
+
+let store = load();
+let setting = { range: 'test2', count: 10, mode: 'flash' };
+let session = null;
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return { stats: {} };
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+}
+function stat(n) {
+  if (!store.stats[n]) store.stats[n] = { ok: 0, ng: 0, streak: 0 };
+  return store.stats[n];
+}
+function isWeak(n) {
+  const s = store.stats[n];
+  return !!s && s.ng > 0 && s.streak < 2;
+}
+function weakList() {
+  return QUESTIONS.filter(q => isWeak(q.q));
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pool(range) {
+  if (range === 'all') return QUESTIONS.slice();
+  if (range === 'weak') return weakList();
+  if (TESTS[range]) return QUESTIONS.filter(q => TESTS[range].cats.indexOf(q.c) >= 0);
+  return QUESTIONS.filter(q => q.c === range);
+}
+
+/* ---------- ホーム ---------- */
+function renderHome() {
+  $('homeLede').textContent = '化学の単元テスト範囲、全' + QUESTIONS.length + '問。範囲とやり方を選んで始めます。';
+
+  const ranges = [
+    { key: 'test2', label: TESTS.test2.label },
+    { key: 'test1', label: TESTS.test1.label },
+    { key: 'all', label: '全部' },
+    { key: 'A', label: CATS.A },
+    { key: 'B', label: CATS.B },
+    { key: 'C', label: CATS.C },
+    { key: 'D', label: CATS.D },
+    { key: 'weak', label: '苦手だけ' }
+  ];
+  const rc = $('rangeChoices');
+  rc.innerHTML = '';
+  ranges.forEach(r => {
+    const n = pool(r.key).length;
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.setAttribute('aria-pressed', String(setting.range === r.key));
+    b.innerHTML = '<span>' + r.label + '</span><span class="count">' + n + '</span>';
+    b.disabled = n === 0;
+    b.onclick = () => { setting.range = r.key; renderHome(); };
+    rc.appendChild(b);
+  });
+
+  const max = pool(setting.range).length;
+  const cc = $('countChoices');
+  cc.innerHTML = '';
+  [10, 20, 'all'].forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = c === 'all' ? 'ぜんぶ（' + max + '問）' : c + '問';
+    b.disabled = c !== 'all' && max < c;
+    b.setAttribute('aria-pressed', String(setting.count === c));
+    b.onclick = () => { setting.count = c; renderHome(); };
+    cc.appendChild(b);
+  });
+  if (setting.count !== 'all' && max < setting.count) setting.count = 'all';
+
+  Array.from($('modeChoices').children).forEach(b => {
+    b.setAttribute('aria-pressed', String(b.dataset.mode === setting.mode));
+    b.onclick = () => { setting.mode = b.dataset.mode; renderHome(); };
+  });
+
+  const done = Object.keys(store.stats).length;
+  const totalOk = Object.values(store.stats).reduce((s, v) => s + v.ok, 0);
+  const totalNg = Object.values(store.stats).reduce((s, v) => s + v.ng, 0);
+  const rate = totalOk + totalNg ? Math.round(totalOk * 100 / (totalOk + totalNg)) : 0;
+  $('homeStats').innerHTML =
+    '<span class="cell">これまでの正答率<b>' + rate + '%</b></span>' +
+    '<span class="cell">やった問題<b>' + done + ' / ' + QUESTIONS.length + '</b></span>' +
+    '<span class="cell">苦手<b>' + weakList().length + '問</b></span>';
+  if (done) {
+    const reset = document.createElement('button');
+    reset.className = 'linkish';
+    reset.textContent = '記録を消す';
+    reset.onclick = () => {
+      if (confirm('これまでの正誤の記録を全部消します。よろしいですか？')) {
+        store = { stats: {} }; save(); renderHome();
+      }
+    };
+    $('homeStats').appendChild(reset);
+  }
+}
+
+/* ---------- 出題 ---------- */
+function show(screen) {
+  ['home', 'play', 'result'].forEach(id => { $(id).hidden = id !== screen; });
+  window.scrollTo(0, 0);
+}
+
+function start(list) {
+  session = { list: list, i: 0, miss: [], okCount: 0 };
+  show('play');
+  renderQuestion();
+}
+
+function startFromSetting() {
+  let list = shuffle(pool(setting.range));
+  if (setting.count !== 'all') list = list.slice(0, setting.count);
+  start(list);
+}
+
+function makeOptions(q) {
+  const others = [];
+  const add = a => {
+    if (a !== q.a && others.indexOf(a) < 0 && others.length < 3) others.push(a);
+  };
+  shuffle(QUESTIONS.filter(x => x.c === q.c)).forEach(x => add(x.a));
+  shuffle(QUESTIONS).forEach(x => add(x.a));
+  return shuffle(others.concat([q.a]));
+}
+
+function renderQuestion() {
+  const q = session.list[session.i];
+  $('playCat').textContent = CATS[q.c];
+  $('playPos').textContent = (session.i + 1) + ' / ' + session.list.length;
+  $('playFill').style.width = (session.i / session.list.length * 100) + '%';
+  $('playNum').textContent = 'No.' + q.n + (isWeak(q.q) ? '　苦手' : '');
+  $('playQ').textContent = q.q;
+  $('playAnswer').innerHTML = '';
+  $('playOptions').innerHTML = '';
+  $('playControls').innerHTML = '';
+
+  if (setting.mode === 'flash') renderFlash(q);
+  else renderQuiz(q);
+}
+
+function renderFlash(q) {
+  const reveal = document.createElement('button');
+  reveal.className = 'btn';
+  reveal.textContent = '答えを見る';
+  reveal.onclick = () => {
+    $('playAnswer').innerHTML = '<div class="answer">' + q.a + '</div>';
+    const row = document.createElement('div');
+    row.className = 'btn-row';
+    const ok = document.createElement('button');
+    ok.className = 'btn';
+    ok.textContent = '○ できた';
+    ok.onclick = () => grade(q, true);
+    const ng = document.createElement('button');
+    ng.className = 'btn ghost';
+    ng.textContent = '× まちがえた';
+    ng.onclick = () => grade(q, false);
+    row.append(ok, ng);
+    $('playControls').innerHTML = '';
+    $('playControls').appendChild(row);
+  };
+  $('playControls').appendChild(reveal);
+}
+
+function renderQuiz(q) {
+  const opts = makeOptions(q);
+  const box = $('playOptions');
+  opts.forEach((text, idx) => {
+    const b = document.createElement('button');
+    b.className = 'option';
+    b.innerHTML = '<span class="mark">' + (idx + 1) + '</span><span>' + text + '</span>';
+    b.onclick = () => {
+      const correct = text === q.a;
+      Array.from(box.children).forEach((el, i) => {
+        el.disabled = true;
+        if (opts[i] === q.a) el.classList.add('is-ok');
+        else if (i === idx) el.classList.add('is-ng');
+      });
+      if (!correct && navigator.vibrate) navigator.vibrate(40);
+      const judge = document.createElement('div');
+      judge.className = 'judge ' + (correct ? 'ok' : 'ng');
+      judge.innerHTML = correct
+        ? '<span class="big-mark">○</span>正解！'
+        : '<span class="big-mark">×</span>正解は<span class="right">' + q.a + '</span>';
+      const next = document.createElement('button');
+      next.className = 'btn';
+      next.textContent = session.i + 1 < session.list.length ? '次の問題へ' : '結果を見る';
+      next.onclick = () => grade(q, correct);
+      $('playControls').append(judge, next);
+      next.focus();
+    };
+    box.appendChild(b);
+  });
+}
+
+function grade(q, correct) {
+  const s = stat(q.q);
+  if (correct) { s.ok++; s.streak++; session.okCount++; }
+  else { s.ng++; s.streak = 0; session.miss.push(q); }
+  save();
+  session.i++;
+  if (session.i < session.list.length) renderQuestion();
+  else renderResult();
+}
+
+/* ---------- 結果 ---------- */
+function renderResult() {
+  show('result');
+  const total = session.list.length;
+  const ok = session.okCount;
+  const rate = Math.round(ok * 100 / total);
+  $('scoreBig').textContent = rate + '%';
+  $('scoreSub').textContent = total + '問中 ' + ok + '問 正解';
+  $('resultTitle').textContent = rate === 100 ? '全問正解！' : (rate >= 80 ? 'いい調子' : 'もう一周いこう');
+
+  const list = $('missList');
+  list.innerHTML = '';
+  if (session.miss.length === 0) {
+    $('missBlock').hidden = true;
+    $('againBtn').hidden = true;
+  } else {
+    $('missBlock').hidden = false;
+    $('againBtn').hidden = false;
+    $('againBtn').textContent = 'まちがえた' + session.miss.length + '問をもう一度';
+    session.miss.forEach(q => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = '<span class="n">' + q.n + '</span><span class="q">' + q.q + '</span><span class="a">' + q.a + '</span>';
+      list.appendChild(row);
+    });
+  }
+}
+
+/* ---------- 起動 ---------- */
+$('startBtn').onclick = startFromSetting;
+$('quitBtn').onclick = () => { renderHome(); show('home'); };
+$('homeBtn').onclick = () => { renderHome(); show('home'); };
+$('againBtn').onclick = () => start(shuffle(session.miss));
+
+renderHome();
+</script>

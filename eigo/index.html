@@ -1,0 +1,1186 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>中1 英単語</title>
+<style>
+  :root {
+    --ground: #F4F7FC;
+    --surface: #FFFFFF;
+    --surface-2: #E7EDF8;
+    --ink: #1A1F2B;
+    --ink-soft: #5A6274;
+    --line: #D6DDEC;
+    --accent: #2563C9;
+    --accent-ink: #F7F8FB;
+    --accent-soft: #DCE8FB;
+    --contour: #C9682F;
+    --ok: #1E8A52;
+    --ok-soft: #D6F2E0;
+    --ng: #C7452F;
+    --ng-soft: #FCE2DC;
+    --radius: 10px;
+    --font-display: "Yu Mincho", YuMincho, "Hiragino Mincho ProN", "Noto Serif JP", serif;
+    --font-en: Georgia, "Times New Roman", "Noto Serif", serif;
+    --font-body: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", system-ui, sans-serif;
+    --font-num: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0F1319;
+      --surface: #181D26;
+      --surface-2: #222835;
+      --ink: #E6E9EF;
+      --ink-soft: #99A2B3;
+      --line: #2C3340;
+      --accent: #7FA8E0;
+      --accent-ink: #0F1620;
+      --accent-soft: #1C2838;
+      --contour: #D4896B;
+      --ok: #74C48D;
+      --ok-soft: #1C2E23;
+      --ng: #E28E7C;
+      --ng-soft: #33201C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0F1319;
+    --surface: #181D26;
+    --surface-2: #222835;
+    --ink: #E6E9EF;
+    --ink-soft: #99A2B3;
+    --line: #2C3340;
+    --accent: #7FA8E0;
+    --accent-ink: #0F1620;
+    --accent-soft: #1C2838;
+    --contour: #D4896B;
+    --ok: #74C48D;
+    --ok-soft: #1C2E23;
+    --ng: #E28E7C;
+    --ng-soft: #33201C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1.25rem 1.1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: 100vh;
+  }
+
+  .screen { display: flex; flex-direction: column; gap: 1.5rem; }
+  .screen[hidden] { display: none; }
+
+  /* ---- 見出し ---- */
+  .masthead { display: flex; flex-direction: column; gap: .35rem; }
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--contour);
+    font-family: var(--font-num);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+  .notice {
+    font-size: .8rem;
+    color: var(--contour);
+    border: 1px dashed var(--contour);
+    border-radius: var(--radius);
+    padding: .6rem .8rem;
+    line-height: 1.6;
+  }
+
+  /* ---- 設定ブロック ---- */
+  .field { display: flex; flex-direction: column; gap: .6rem; }
+  .field > .label {
+    font-size: .78rem;
+    letter-spacing: .12em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: .35rem;
+  }
+  .choices { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+  .chip {
+    font: inherit;
+    font-size: .88rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: .42rem .9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: baseline;
+    gap: .4rem;
+  }
+  .chip .count { font-family: var(--font-num); font-size: .78rem; color: var(--ink-soft); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .chip[aria-pressed="true"] .count { color: var(--accent-ink); opacity: .75; }
+  .chip:disabled { opacity: .4; cursor: default; }
+
+  /* ---- ボタン ---- */
+  .btn {
+    font: inherit;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: .85rem 1rem;
+    cursor: pointer;
+    width: 100%;
+  }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn.ghost.strong {
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    background: var(--surface);
+    font-weight: 600;
+  }
+  .btn.small { font-size: .85rem; padding: .55rem .9rem; width: auto; }
+  .btn-row { display: flex; gap: .6rem; }
+  .btn-row > * { flex: 1; }
+
+  button:focus-visible, .chip:focus-visible, input:focus-visible {
+    outline: 2px solid var(--contour);
+    outline-offset: 2px;
+  }
+
+  /* ---- 出題画面 ---- */
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    font-size: .78rem;
+    color: var(--ink-soft);
+  }
+  .bar .cat { letter-spacing: .1em; }
+  .bar .pos { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+  .track { height: 3px; background: var(--surface-2); position: relative; }
+  .track .fill { height: 100%; background: var(--accent); transition: width .25s ease; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .qnum {
+    font-family: var(--font-num);
+    font-size: .78rem;
+    color: var(--contour);
+    letter-spacing: .1em;
+  }
+  .qtext {
+    font-family: var(--font-display);
+    font-size: 1.28rem;
+    line-height: 1.85;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .qtext.en {
+    font-family: var(--font-en);
+    font-size: 2.1rem;
+    line-height: 1.4;
+    letter-spacing: .01em;
+  }
+  .say {
+    font: inherit;
+    font-size: .8rem;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    border-radius: 999px;
+    padding: .25rem .8rem;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  .answer {
+    border-top: 1px dashed var(--line);
+    padding-top: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: .03em;
+    animation: rise .22s ease-out;
+  }
+  .answer.en { font-family: var(--font-en); }
+  @keyframes rise { from { opacity: 0; transform: translateY(.35rem); } to { opacity: 1; transform: none; } }
+
+  .options { display: flex; flex-direction: column; gap: .55rem; }
+  .option {
+    font: inherit;
+    text-align: left;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: .8rem .95rem;
+    cursor: pointer;
+    display: flex;
+    gap: .7rem;
+    align-items: baseline;
+  }
+  .option .mark { font-family: var(--font-num); color: var(--ink-soft); font-size: .8rem; }
+  .option.is-ok {
+    background: var(--ok-soft);
+    border-color: var(--ok);
+    border-width: 2px;
+    color: var(--ok);
+    font-weight: 700;
+  }
+  .option.is-ng { background: var(--ng-soft); border-color: var(--ng); color: var(--ng); }
+  .option:disabled { cursor: default; }
+
+  /* ---- スペル入力 ---- */
+  .spell { display: flex; flex-direction: column; gap: .7rem; }
+  .spell input {
+    font-family: var(--font-en);
+    font-size: 1.5rem;
+    padding: .7rem .8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--ground);
+    color: var(--ink);
+    width: 100%;
+    text-align: center;
+  }
+  .hint {
+    font-family: var(--font-num);
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    letter-spacing: .3em;
+    text-align: center;
+    min-height: 1.6rem;
+  }
+  .yours { font-size: .85rem; color: var(--ink-soft); }
+  .yours b { font-family: var(--font-en); color: var(--ng); font-weight: 600; }
+
+  .judge {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    flex-wrap: wrap;
+    padding: .8rem 1rem;
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+  }
+  .judge .big-mark { font-size: 1.75rem; line-height: 1; }
+  .judge.ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
+  .judge.ng { color: var(--ng); background: var(--ng-soft); border-color: var(--ng); }
+  .judge .right { font-family: var(--font-display); font-size: 1.25rem; }
+  .judge .en { font-family: var(--font-en); font-size: 1.1rem; }
+
+  /* ---- 結果画面 ---- */
+  .score {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    font-family: var(--font-num);
+  }
+  .score .big { font-size: 3.2rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .score .sub { color: var(--ink-soft); font-size: .9rem; }
+
+  .review { display: flex; flex-direction: column; gap: .1rem; }
+  .review .row {
+    display: flex;
+    gap: .8rem;
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: .9rem;
+    align-items: baseline;
+  }
+  .review .row .n { font-family: var(--font-num); color: var(--contour); font-size: .78rem; }
+  .review .row .q { flex: 1; font-family: var(--font-en); font-size: 1.05rem; }
+  .review .row .a { color: var(--ink-soft); text-align: right; }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: .9rem;
+  }
+  .stats b { font-family: var(--font-num); font-size: 1.05rem; color: var(--ink); font-weight: 500; }
+  .stats .cell { display: flex; flex-direction: column; }
+  .linkish {
+    font: inherit;
+    font-size: .8rem;
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    align-self: flex-start;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ホーム -->
+  <section class="screen" id="home">
+    <div class="masthead">
+      <span class="eyebrow">English Words</span>
+      <h1>中1 英単語</h1>
+      <p class="lede" id="homeLede"></p>
+    </div>
+
+    <p class="notice" id="sampleNotice">
+      いまの単語は教科書そのものではなく、中1で広く共通して出てくる基本の単語です。教科書（NEW CROWN）の写真を用意できたら、習った順（Lesson別）に並べかえて、足りない単語を足します。それまでの記録はそのまま残ります。
+    </p>
+
+    <div class="field">
+      <span class="label">はんい</span>
+      <div class="choices" id="rangeChoices"></div>
+    </div>
+
+    <div class="field">
+      <span class="label">出題数</span>
+      <div class="choices" id="countChoices"></div>
+    </div>
+
+    <div class="field">
+      <span class="label">やり方</span>
+      <div class="choices" id="modeChoices">
+        <button class="chip" data-mode="quiz">意味を4つから選ぶ</button>
+        <button class="chip" data-mode="flash">意味を思い出す</button>
+        <button class="chip" data-mode="spell">スペルを書く</button>
+      </div>
+    </div>
+
+    <button class="btn" id="startBtn">はじめる</button>
+
+    <div class="stats" id="homeStats"></div>
+  </section>
+
+  <!-- 出題 -->
+  <section class="screen" id="play" hidden>
+    <div class="bar">
+      <span class="cat" id="playCat"></span>
+      <span class="pos" id="playPos"></span>
+    </div>
+    <div class="track"><div class="fill" id="playFill" style="width:0%"></div></div>
+
+    <div class="card">
+      <div class="qnum" id="playNum"></div>
+      <p class="qtext" id="playQ"></p>
+      <div id="playSay"></div>
+      <div id="playAnswer"></div>
+      <div class="options" id="playOptions"></div>
+    </div>
+
+    <div id="playControls"></div>
+    <button class="btn ghost strong" id="quitBtn">ホームにもどる</button>
+  </section>
+
+  <!-- 結果 -->
+  <section class="screen" id="result" hidden>
+    <div class="masthead">
+      <span class="eyebrow">Result</span>
+      <h1 id="resultTitle">おつかれさま</h1>
+    </div>
+
+    <div class="score">
+      <span class="big" id="scoreBig">0</span>
+      <span class="sub" id="scoreSub"></span>
+    </div>
+
+    <div class="field" id="missBlock">
+      <span class="label">まちがえた単語</span>
+      <div class="review" id="missList"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="againBtn">まちがえた単語をもう一度</button>
+    </div>
+    <button class="btn ghost strong" id="homeBtn">ホームにもどる</button>
+  </section>
+
+</div>
+
+<script>
+/* ===========================================================
+   単語データ
+   l: グループ名（教科書の Lesson 名に入れ替える）
+   en: 英単語 / ja: 意味
+   SAMPLE を false にすると、ホームの注意書きが消える
+   =========================================================== */
+/* 暫定データ。教科書の写真が用意できたら Lesson 別に差し替える。
+   正誤の記録は単語そのもの(en)をキーに保存しているので、並べ替えても消えない。 */
+const SAMPLE = true;
+
+const RAW = [
+  {l:'あいさつ・教室', en:'hello',          ja:'こんにちは'},
+  {l:'あいさつ・教室', en:'hi',             ja:'やあ'},
+  {l:'あいさつ・教室', en:'good morning',   ja:'おはよう'},
+  {l:'あいさつ・教室', en:'good evening',   ja:'こんばんは'},
+  {l:'あいさつ・教室', en:'good night',     ja:'おやすみなさい'},
+  {l:'あいさつ・教室', en:'goodbye',        ja:'さようなら'},
+  {l:'あいさつ・教室', en:'thank you',      ja:'ありがとう'},
+  {l:'あいさつ・教室', en:'sorry',          ja:'ごめんなさい'},
+  {l:'あいさつ・教室', en:'please',         ja:'どうぞ、お願いします'},
+  {l:'あいさつ・教室', en:'yes',            ja:'はい'},
+  {l:'あいさつ・教室', en:'no',             ja:'いいえ'},
+  {l:'あいさつ・教室', en:'name',           ja:'名前'},
+  {l:'あいさつ・教室', en:'teacher',        ja:'先生'},
+  {l:'あいさつ・教室', en:'student',        ja:'生徒'},
+  {l:'あいさつ・教室', en:'friend',         ja:'友だち'},
+  {l:'あいさつ・教室', en:'class',          ja:'クラス、授業'},
+  {l:'あいさつ・教室', en:'classroom',      ja:'教室'},
+  {l:'あいさつ・教室', en:'school',         ja:'学校'},
+  {l:'あいさつ・教室', en:'desk',           ja:'つくえ'},
+  {l:'あいさつ・教室', en:'chair',          ja:'いす'},
+  {l:'あいさつ・教室', en:'blackboard',     ja:'黒板'},
+  {l:'あいさつ・教室', en:'window',         ja:'窓'},
+  {l:'あいさつ・教室', en:'door',           ja:'ドア'},
+  {l:'あいさつ・教室', en:'clock',          ja:'時計'},
+
+  {l:'数', en:'one',      ja:'1'},
+  {l:'数', en:'two',      ja:'2'},
+  {l:'数', en:'three',    ja:'3'},
+  {l:'数', en:'four',     ja:'4'},
+  {l:'数', en:'five',     ja:'5'},
+  {l:'数', en:'six',      ja:'6'},
+  {l:'数', en:'seven',    ja:'7'},
+  {l:'数', en:'eight',    ja:'8'},
+  {l:'数', en:'nine',     ja:'9'},
+  {l:'数', en:'ten',      ja:'10'},
+  {l:'数', en:'eleven',   ja:'11'},
+  {l:'数', en:'twelve',   ja:'12'},
+  {l:'数', en:'thirteen', ja:'13'},
+  {l:'数', en:'fifteen',  ja:'15'},
+  {l:'数', en:'twenty',   ja:'20'},
+  {l:'数', en:'thirty',   ja:'30'},
+  {l:'数', en:'forty',    ja:'40'},
+  {l:'数', en:'fifty',    ja:'50'},
+  {l:'数', en:'hundred',  ja:'100'},
+  {l:'数', en:'first',    ja:'1番目の'},
+  {l:'数', en:'second',   ja:'2番目の'},
+  {l:'数', en:'third',    ja:'3番目の'},
+  {l:'数', en:'fourth',   ja:'4番目の'},
+  {l:'数', en:'fifth',    ja:'5番目の'},
+  {l:'数', en:'number',   ja:'数、番号'},
+
+  {l:'曜日・月・時', en:'Sunday',    ja:'日曜日'},
+  {l:'曜日・月・時', en:'Monday',    ja:'月曜日'},
+  {l:'曜日・月・時', en:'Tuesday',   ja:'火曜日'},
+  {l:'曜日・月・時', en:'Wednesday', ja:'水曜日'},
+  {l:'曜日・月・時', en:'Thursday',  ja:'木曜日'},
+  {l:'曜日・月・時', en:'Friday',    ja:'金曜日'},
+  {l:'曜日・月・時', en:'Saturday',  ja:'土曜日'},
+  {l:'曜日・月・時', en:'January',   ja:'1月'},
+  {l:'曜日・月・時', en:'February',  ja:'2月'},
+  {l:'曜日・月・時', en:'March',     ja:'3月'},
+  {l:'曜日・月・時', en:'April',     ja:'4月'},
+  {l:'曜日・月・時', en:'May',       ja:'5月'},
+  {l:'曜日・月・時', en:'June',      ja:'6月'},
+  {l:'曜日・月・時', en:'July',      ja:'7月'},
+  {l:'曜日・月・時', en:'August',    ja:'8月'},
+  {l:'曜日・月・時', en:'September', ja:'9月'},
+  {l:'曜日・月・時', en:'October',   ja:'10月'},
+  {l:'曜日・月・時', en:'November',  ja:'11月'},
+  {l:'曜日・月・時', en:'December',  ja:'12月'},
+  {l:'曜日・月・時', en:'today',     ja:'今日'},
+  {l:'曜日・月・時', en:'tomorrow',  ja:'明日'},
+  {l:'曜日・月・時', en:'yesterday', ja:'昨日'},
+  {l:'曜日・月・時', en:'morning',   ja:'朝、午前'},
+  {l:'曜日・月・時', en:'afternoon', ja:'午後'},
+  {l:'曜日・月・時', en:'evening',   ja:'夕方、晩'},
+  {l:'曜日・月・時', en:'night',     ja:'夜'},
+  {l:'曜日・月・時', en:'time',      ja:'時間'},
+  {l:'曜日・月・時', en:'day',       ja:'日、1日'},
+  {l:'曜日・月・時', en:'week',      ja:'週'},
+  {l:'曜日・月・時', en:'month',     ja:'（暦の）月'},
+  {l:'曜日・月・時', en:'year',      ja:'年'},
+
+  {l:'家族・人', en:'family',      ja:'家族'},
+  {l:'家族・人', en:'father',      ja:'父'},
+  {l:'家族・人', en:'mother',      ja:'母'},
+  {l:'家族・人', en:'brother',     ja:'兄、弟'},
+  {l:'家族・人', en:'sister',      ja:'姉、妹'},
+  {l:'家族・人', en:'grandfather', ja:'祖父'},
+  {l:'家族・人', en:'grandmother', ja:'祖母'},
+  {l:'家族・人', en:'parent',      ja:'親'},
+  {l:'家族・人', en:'son',         ja:'息子'},
+  {l:'家族・人', en:'daughter',    ja:'娘'},
+  {l:'家族・人', en:'baby',        ja:'赤ちゃん'},
+  {l:'家族・人', en:'boy',         ja:'男の子'},
+  {l:'家族・人', en:'girl',        ja:'女の子'},
+  {l:'家族・人', en:'man',         ja:'男の人'},
+  {l:'家族・人', en:'woman',       ja:'女の人'},
+  {l:'家族・人', en:'child',       ja:'子ども'},
+  {l:'家族・人', en:'people',      ja:'人々'},
+  {l:'家族・人', en:'everyone',    ja:'みんな'},
+
+  {l:'食べもの', en:'food',      ja:'食べ物'},
+  {l:'食べもの', en:'breakfast', ja:'朝食'},
+  {l:'食べもの', en:'lunch',     ja:'昼食'},
+  {l:'食べもの', en:'dinner',    ja:'夕食'},
+  {l:'食べもの', en:'rice',      ja:'ごはん、米'},
+  {l:'食べもの', en:'bread',     ja:'パン'},
+  {l:'食べもの', en:'egg',       ja:'たまご'},
+  {l:'食べもの', en:'meat',      ja:'肉'},
+  {l:'食べもの', en:'fish',      ja:'魚'},
+  {l:'食べもの', en:'vegetable', ja:'野菜'},
+  {l:'食べもの', en:'fruit',     ja:'くだもの'},
+  {l:'食べもの', en:'apple',     ja:'りんご'},
+  {l:'食べもの', en:'orange',    ja:'オレンジ'},
+  {l:'食べもの', en:'banana',    ja:'バナナ'},
+  {l:'食べもの', en:'cake',      ja:'ケーキ'},
+  {l:'食べもの', en:'ice cream', ja:'アイスクリーム'},
+  {l:'食べもの', en:'water',     ja:'水'},
+  {l:'食べもの', en:'milk',      ja:'牛乳'},
+  {l:'食べもの', en:'tea',       ja:'お茶、紅茶'},
+  {l:'食べもの', en:'coffee',    ja:'コーヒー'},
+  {l:'食べもの', en:'juice',     ja:'ジュース'},
+  {l:'食べもの', en:'sugar',     ja:'さとう'},
+  {l:'食べもの', en:'salt',      ja:'しお'},
+  {l:'食べもの', en:'curry',     ja:'カレー'},
+  {l:'食べもの', en:'sandwich',  ja:'サンドイッチ'},
+
+  {l:'動物・自然', en:'animal',   ja:'動物'},
+  {l:'動物・自然', en:'dog',      ja:'犬'},
+  {l:'動物・自然', en:'cat',      ja:'ねこ'},
+  {l:'動物・自然', en:'bird',     ja:'鳥'},
+  {l:'動物・自然', en:'horse',    ja:'馬'},
+  {l:'動物・自然', en:'rabbit',   ja:'うさぎ'},
+  {l:'動物・自然', en:'panda',    ja:'パンダ'},
+  {l:'動物・自然', en:'elephant', ja:'ぞう'},
+  {l:'動物・自然', en:'lion',     ja:'ライオン'},
+  {l:'動物・自然', en:'monkey',   ja:'さる'},
+  {l:'動物・自然', en:'flower',   ja:'花'},
+  {l:'動物・自然', en:'tree',     ja:'木'},
+  {l:'動物・自然', en:'mountain', ja:'山'},
+  {l:'動物・自然', en:'river',    ja:'川'},
+  {l:'動物・自然', en:'sea',      ja:'海'},
+  {l:'動物・自然', en:'sky',      ja:'空'},
+  {l:'動物・自然', en:'sun',      ja:'太陽'},
+  {l:'動物・自然', en:'moon',     ja:'（空の）月'},
+  {l:'動物・自然', en:'star',     ja:'星'},
+  {l:'動物・自然', en:'rain',     ja:'雨'},
+  {l:'動物・自然', en:'snow',     ja:'雪'},
+  {l:'動物・自然', en:'wind',     ja:'風'},
+
+  {l:'身の回りのもの', en:'book',     ja:'本'},
+  {l:'身の回りのもの', en:'notebook', ja:'ノート'},
+  {l:'身の回りのもの', en:'pen',      ja:'ペン'},
+  {l:'身の回りのもの', en:'pencil',   ja:'えんぴつ'},
+  {l:'身の回りのもの', en:'eraser',   ja:'消しゴム'},
+  {l:'身の回りのもの', en:'ruler',    ja:'じょうぎ'},
+  {l:'身の回りのもの', en:'bag',      ja:'かばん'},
+  {l:'身の回りのもの', en:'umbrella', ja:'かさ'},
+  {l:'身の回りのもの', en:'camera',   ja:'カメラ'},
+  {l:'身の回りのもの', en:'computer', ja:'コンピューター'},
+  {l:'身の回りのもの', en:'phone',    ja:'電話'},
+  {l:'身の回りのもの', en:'picture',  ja:'絵、写真'},
+  {l:'身の回りのもの', en:'letter',   ja:'手紙'},
+  {l:'身の回りのもの', en:'map',      ja:'地図'},
+  {l:'身の回りのもの', en:'key',      ja:'かぎ'},
+  {l:'身の回りのもの', en:'box',      ja:'箱'},
+  {l:'身の回りのもの', en:'cup',      ja:'カップ'},
+  {l:'身の回りのもの', en:'ball',     ja:'ボール'},
+  {l:'身の回りのもの', en:'bike',     ja:'自転車'},
+  {l:'身の回りのもの', en:'bus',      ja:'バス'},
+  {l:'身の回りのもの', en:'train',    ja:'電車'},
+  {l:'身の回りのもの', en:'car',      ja:'車'},
+  {l:'身の回りのもの', en:'house',    ja:'家（建物）'},
+  {l:'身の回りのもの', en:'room',     ja:'部屋'},
+  {l:'身の回りのもの', en:'shoes',    ja:'くつ'},
+  {l:'身の回りのもの', en:'cap',      ja:'ぼうし'},
+  {l:'身の回りのもの', en:'T-shirt',  ja:'Tシャツ'},
+
+  {l:'学校・教科', en:'English',  ja:'英語'},
+  {l:'学校・教科', en:'Japanese', ja:'日本語、国語'},
+  {l:'学校・教科', en:'math',     ja:'数学'},
+  {l:'学校・教科', en:'science',  ja:'理科'},
+  {l:'学校・教科', en:'music',    ja:'音楽'},
+  {l:'学校・教科', en:'art',      ja:'美術'},
+  {l:'学校・教科', en:'history',  ja:'歴史'},
+  {l:'学校・教科', en:'club',     ja:'部活動'},
+  {l:'学校・教科', en:'homework', ja:'宿題'},
+  {l:'学校・教科', en:'test',     ja:'テスト'},
+  {l:'学校・教科', en:'lesson',   ja:'授業、レッスン'},
+  {l:'学校・教科', en:'question', ja:'質問'},
+  {l:'学校・教科', en:'answer',   ja:'答え'},
+  {l:'学校・教科', en:'word',     ja:'単語、ことば'},
+  {l:'学校・教科', en:'story',    ja:'物語'},
+  {l:'学校・教科', en:'library',  ja:'図書館'},
+  {l:'学校・教科', en:'gym',      ja:'体育館'},
+  {l:'学校・教科', en:'festival', ja:'祭り'},
+  {l:'学校・教科', en:'trip',     ja:'旅行'},
+  {l:'学校・教科', en:'vacation', ja:'休暇'},
+
+  {l:'スポーツ・楽しみ', en:'sport',      ja:'スポーツ'},
+  {l:'スポーツ・楽しみ', en:'soccer',     ja:'サッカー'},
+  {l:'スポーツ・楽しみ', en:'baseball',   ja:'野球'},
+  {l:'スポーツ・楽しみ', en:'basketball', ja:'バスケットボール'},
+  {l:'スポーツ・楽しみ', en:'tennis',     ja:'テニス'},
+  {l:'スポーツ・楽しみ', en:'swimming',   ja:'水泳'},
+  {l:'スポーツ・楽しみ', en:'game',       ja:'ゲーム、試合'},
+  {l:'スポーツ・楽しみ', en:'team',       ja:'チーム'},
+  {l:'スポーツ・楽しみ', en:'player',     ja:'選手'},
+  {l:'スポーツ・楽しみ', en:'movie',      ja:'映画'},
+  {l:'スポーツ・楽しみ', en:'song',       ja:'歌'},
+  {l:'スポーツ・楽しみ', en:'piano',      ja:'ピアノ'},
+  {l:'スポーツ・楽しみ', en:'guitar',     ja:'ギター'},
+  {l:'スポーツ・楽しみ', en:'hobby',      ja:'趣味'},
+  {l:'スポーツ・楽しみ', en:'camp',       ja:'キャンプ'},
+
+  {l:'色', en:'color',  ja:'色'},
+  {l:'色', en:'red',    ja:'赤'},
+  {l:'色', en:'blue',   ja:'青'},
+  {l:'色', en:'white',  ja:'白'},
+  {l:'色', en:'black',  ja:'黒'},
+  {l:'色', en:'green',  ja:'緑'},
+  {l:'色', en:'yellow', ja:'黄色'},
+  {l:'色', en:'brown',  ja:'茶色'},
+
+  {l:'動きを表す語', en:'go',       ja:'行く'},
+  {l:'動きを表す語', en:'come',     ja:'来る'},
+  {l:'動きを表す語', en:'eat',      ja:'食べる'},
+  {l:'動きを表す語', en:'drink',    ja:'飲む'},
+  {l:'動きを表す語', en:'play',     ja:'（スポーツを）する、遊ぶ'},
+  {l:'動きを表す語', en:'study',    ja:'勉強する'},
+  {l:'動きを表す語', en:'read',     ja:'読む'},
+  {l:'動きを表す語', en:'write',    ja:'書く'},
+  {l:'動きを表す語', en:'speak',    ja:'（言葉を）話す'},
+  {l:'動きを表す語', en:'talk',     ja:'おしゃべりする'},
+  {l:'動きを表す語', en:'listen',   ja:'聞く'},
+  {l:'動きを表す語', en:'see',      ja:'見える、会う'},
+  {l:'動きを表す語', en:'look',     ja:'目を向ける'},
+  {l:'動きを表す語', en:'watch',    ja:'（動くものを）見る'},
+  {l:'動きを表す語', en:'run',      ja:'走る'},
+  {l:'動きを表す語', en:'walk',     ja:'歩く'},
+  {l:'動きを表す語', en:'swim',     ja:'泳ぐ'},
+  {l:'動きを表す語', en:'sing',     ja:'歌う'},
+  {l:'動きを表す語', en:'dance',    ja:'おどる'},
+  {l:'動きを表す語', en:'jump',     ja:'とぶ'},
+  {l:'動きを表す語', en:'sit',      ja:'すわる'},
+  {l:'動きを表す語', en:'stand',    ja:'立つ'},
+  {l:'動きを表す語', en:'sleep',    ja:'ねむる'},
+  {l:'動きを表す語', en:'get',      ja:'手に入れる'},
+  {l:'動きを表す語', en:'give',     ja:'あげる'},
+  {l:'動きを表す語', en:'take',     ja:'取る、持っていく'},
+  {l:'動きを表す語', en:'make',     ja:'作る'},
+  {l:'動きを表す語', en:'have',     ja:'持っている'},
+  {l:'動きを表す語', en:'like',     ja:'好きである'},
+  {l:'動きを表す語', en:'love',     ja:'大好きである'},
+  {l:'動きを表す語', en:'want',     ja:'ほしい'},
+  {l:'動きを表す語', en:'know',     ja:'知っている'},
+  {l:'動きを表す語', en:'think',    ja:'考える、思う'},
+  {l:'動きを表す語', en:'say',      ja:'言う'},
+  {l:'動きを表す語', en:'help',     ja:'助ける、手伝う'},
+  {l:'動きを表す語', en:'use',      ja:'使う'},
+  {l:'動きを表す語', en:'live',     ja:'住む'},
+  {l:'動きを表す語', en:'work',     ja:'働く'},
+  {l:'動きを表す語', en:'start',    ja:'始める'},
+  {l:'動きを表す語', en:'stop',     ja:'止まる、やめる'},
+  {l:'動きを表す語', en:'open',     ja:'開ける'},
+  {l:'動きを表す語', en:'close',    ja:'閉める'},
+  {l:'動きを表す語', en:'buy',      ja:'買う'},
+  {l:'動きを表す語', en:'cook',     ja:'料理する'},
+  {l:'動きを表す語', en:'clean',    ja:'そうじする'},
+  {l:'動きを表す語', en:'wash',     ja:'洗う'},
+  {l:'動きを表す語', en:'practice', ja:'練習する'},
+  {l:'動きを表す語', en:'enjoy',    ja:'楽しむ'},
+  {l:'動きを表す語', en:'meet',     ja:'（人と）会う'},
+  {l:'動きを表す語', en:'visit',    ja:'訪れる'},
+  {l:'動きを表す語', en:'teach',    ja:'教える'},
+  {l:'動きを表す語', en:'learn',    ja:'学ぶ'},
+  {l:'動きを表す語', en:'find',     ja:'見つける'},
+  {l:'動きを表す語', en:'call',     ja:'呼ぶ、電話する'},
+  {l:'動きを表す語', en:'wait',     ja:'待つ'},
+  {l:'動きを表す語', en:'put',      ja:'置く'},
+
+  {l:'ようすを表す語', en:'big',         ja:'大きい'},
+  {l:'ようすを表す語', en:'small',       ja:'小さい'},
+  {l:'ようすを表す語', en:'long',        ja:'長い'},
+  {l:'ようすを表す語', en:'short',       ja:'短い'},
+  {l:'ようすを表す語', en:'new',         ja:'新しい'},
+  {l:'ようすを表す語', en:'old',         ja:'古い、年をとった'},
+  {l:'ようすを表す語', en:'good',        ja:'よい'},
+  {l:'ようすを表す語', en:'bad',         ja:'悪い'},
+  {l:'ようすを表す語', en:'happy',       ja:'しあわせな'},
+  {l:'ようすを表す語', en:'sad',         ja:'悲しい'},
+  {l:'ようすを表す語', en:'hot',         ja:'暑い、熱い'},
+  {l:'ようすを表す語', en:'cold',        ja:'寒い、冷たい'},
+  {l:'ようすを表す語', en:'warm',        ja:'あたたかい'},
+  {l:'ようすを表す語', en:'cool',        ja:'すずしい'},
+  {l:'ようすを表す語', en:'fast',        ja:'速い'},
+  {l:'ようすを表す語', en:'slow',        ja:'おそい'},
+  {l:'ようすを表す語', en:'easy',        ja:'かんたんな'},
+  {l:'ようすを表す語', en:'difficult',   ja:'むずかしい'},
+  {l:'ようすを表す語', en:'beautiful',   ja:'美しい'},
+  {l:'ようすを表す語', en:'cute',        ja:'かわいい'},
+  {l:'ようすを表す語', en:'kind',        ja:'親切な'},
+  {l:'ようすを表す語', en:'busy',        ja:'いそがしい'},
+  {l:'ようすを表す語', en:'tired',       ja:'つかれた'},
+  {l:'ようすを表す語', en:'hungry',      ja:'おなかがすいた'},
+  {l:'ようすを表す語', en:'delicious',   ja:'とてもおいしい'},
+  {l:'ようすを表す語', en:'favorite',    ja:'お気に入りの'},
+  {l:'ようすを表す語', en:'famous',      ja:'有名な'},
+  {l:'ようすを表す語', en:'interesting', ja:'おもしろい'},
+  {l:'ようすを表す語', en:'fun',         ja:'楽しいこと'},
+  {l:'ようすを表す語', en:'many',        ja:'多くの（数）'},
+  {l:'ようすを表す語', en:'much',        ja:'多くの（量）'},
+  {l:'ようすを表す語', en:'every',       ja:'すべての、毎〜'},
+
+  {l:'場所・国', en:'country',    ja:'国'},
+  {l:'場所・国', en:'Japan',      ja:'日本'},
+  {l:'場所・国', en:'America',    ja:'アメリカ'},
+  {l:'場所・国', en:'Australia',  ja:'オーストラリア'},
+  {l:'場所・国', en:'China',      ja:'中国'},
+  {l:'場所・国', en:'Canada',     ja:'カナダ'},
+  {l:'場所・国', en:'England',    ja:'イギリス'},
+  {l:'場所・国', en:'city',       ja:'市、都市'},
+  {l:'場所・国', en:'town',       ja:'町'},
+  {l:'場所・国', en:'park',       ja:'公園'},
+  {l:'場所・国', en:'station',    ja:'駅'},
+  {l:'場所・国', en:'hospital',   ja:'病院'},
+  {l:'場所・国', en:'restaurant', ja:'レストラン'},
+  {l:'場所・国', en:'shop',       ja:'店'},
+  {l:'場所・国', en:'zoo',        ja:'動物園'},
+  {l:'場所・国', en:'home',       ja:'家庭、わが家'},
+  {l:'場所・国', en:'world',      ja:'世界'},
+
+  {l:'よく使う語', en:'what',      ja:'何'},
+  {l:'よく使う語', en:'when',      ja:'いつ'},
+  {l:'よく使う語', en:'where',     ja:'どこ'},
+  {l:'よく使う語', en:'who',       ja:'だれ'},
+  {l:'よく使う語', en:'why',       ja:'なぜ'},
+  {l:'よく使う語', en:'how',       ja:'どのように'},
+  {l:'よく使う語', en:'which',     ja:'どちら'},
+  {l:'よく使う語', en:'this',      ja:'これ、この'},
+  {l:'よく使う語', en:'that',      ja:'あれ、あの'},
+  {l:'よく使う語', en:'here',      ja:'ここに'},
+  {l:'よく使う語', en:'there',     ja:'そこに'},
+  {l:'よく使う語', en:'now',       ja:'今'},
+  {l:'よく使う語', en:'very',      ja:'とても'},
+  {l:'よく使う語', en:'too',       ja:'〜もまた'},
+  {l:'よく使う語', en:'always',    ja:'いつも'},
+  {l:'よく使う語', en:'usually',   ja:'たいてい'},
+  {l:'よく使う語', en:'sometimes', ja:'ときどき'},
+  {l:'よく使う語', en:'often',     ja:'よく、しばしば'},
+  {l:'よく使う語', en:'never',     ja:'決して〜ない'},
+  {l:'よく使う語', en:'again',     ja:'また、もう一度'},
+  {l:'よく使う語', en:'together',  ja:'いっしょに'},
+  {l:'よく使う語', en:'really',    ja:'本当に'},
+  {l:'よく使う語', en:'about',     ja:'〜について'},
+  {l:'よく使う語', en:'with',      ja:'〜といっしょに'},
+  {l:'よく使う語', en:'from',      ja:'〜から'},
+  {l:'よく使う語', en:'in',        ja:'〜の中に'},
+  {l:'よく使う語', en:'on',        ja:'〜の上に'},
+  {l:'よく使う語', en:'at',        ja:'（場所・時）〜で'},
+  {l:'よく使う語', en:'for',       ja:'〜のために'},
+  {l:'よく使う語', en:'but',       ja:'しかし'},
+  {l:'よく使う語', en:'or',        ja:'または'},
+  {l:'よく使う語', en:'because',   ja:'なぜなら'},
+  {l:'よく使う語', en:'so',        ja:'だから'}
+];
+
+const WORDS = RAW.map((w, i) => ({ n: i + 1, l: w.l, en: w.en, ja: w.ja }));
+
+const GROUPS = WORDS.reduce((acc, w) => (acc.includes(w.l) ? acc : acc.concat([w.l])), []);
+
+const KEY = 'eigo1.v2';
+const $ = id => document.getElementById(id);
+
+let store = load();
+let setting = { range: 'all', count: 10, mode: 'quiz' };
+let session = null;
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return { stats: {} };
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+}
+function stat(n) {
+  if (!store.stats[n]) store.stats[n] = { ok: 0, ng: 0, streak: 0 };
+  return store.stats[n];
+}
+function isWeak(n) {
+  const s = store.stats[n];
+  return !!s && s.ng > 0 && s.streak < 2;
+}
+function weakList() {
+  return WORDS.filter(w => isWeak(w.en));
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pool(range) {
+  if (range === 'all') return WORDS.slice();
+  if (range === 'weak') return weakList();
+  return WORDS.filter(w => w.l === range);
+}
+
+/* 読み上げ。対応していない端末では黙って何もしない */
+function canSpeak() {
+  return typeof window.speechSynthesis !== 'undefined';
+}
+function speak(text) {
+  if (!canSpeak()) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function sayButton(text, label) {
+  const b = document.createElement('button');
+  b.className = 'say';
+  b.type = 'button';
+  b.textContent = label || '🔊 発音を聞く';
+  b.onclick = () => speak(text);
+  return b;
+}
+
+/* スペル判定。大文字小文字と前後の空白は不問 */
+function normalize(s) {
+  return s.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,!?]/g, '');
+}
+
+/* ---------- ホーム ---------- */
+function renderHome() {
+  $('sampleNotice').hidden = !SAMPLE;
+  $('homeLede').textContent = '全' + WORDS.length + '語。はんいとやり方を選んで始めます。';
+
+  const ranges = [{ key: 'all', label: '全部' }]
+    .concat(GROUPS.map(g => ({ key: g, label: g })))
+    .concat([{ key: 'weak', label: '苦手だけ' }]);
+
+  const rc = $('rangeChoices');
+  rc.innerHTML = '';
+  ranges.forEach(r => {
+    const n = pool(r.key).length;
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.setAttribute('aria-pressed', String(setting.range === r.key));
+    b.innerHTML = '<span>' + r.label + '</span><span class="count">' + n + '</span>';
+    b.disabled = n === 0;
+    b.onclick = () => { setting.range = r.key; renderHome(); };
+    rc.appendChild(b);
+  });
+
+  const max = pool(setting.range).length;
+  const cc = $('countChoices');
+  cc.innerHTML = '';
+  [10, 20, 'all'].forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = c === 'all' ? 'ぜんぶ（' + max + '語）' : c + '語';
+    b.disabled = c !== 'all' && max < c;
+    b.setAttribute('aria-pressed', String(setting.count === c));
+    b.onclick = () => { setting.count = c; renderHome(); };
+    cc.appendChild(b);
+  });
+  if (setting.count !== 'all' && max < setting.count) setting.count = 'all';
+
+  Array.from($('modeChoices').children).forEach(b => {
+    b.setAttribute('aria-pressed', String(b.dataset.mode === setting.mode));
+    b.onclick = () => { setting.mode = b.dataset.mode; renderHome(); };
+  });
+
+  const done = Object.keys(store.stats).length;
+  const totalOk = Object.values(store.stats).reduce((s, v) => s + v.ok, 0);
+  const totalNg = Object.values(store.stats).reduce((s, v) => s + v.ng, 0);
+  const rate = totalOk + totalNg ? Math.round(totalOk * 100 / (totalOk + totalNg)) : 0;
+  $('homeStats').innerHTML =
+    '<span class="cell">これまでの正答率<b>' + rate + '%</b></span>' +
+    '<span class="cell">やった単語<b>' + done + ' / ' + WORDS.length + '</b></span>' +
+    '<span class="cell">苦手<b>' + weakList().length + '語</b></span>';
+  if (done) {
+    const reset = document.createElement('button');
+    reset.className = 'linkish';
+    reset.textContent = '記録を消す';
+    reset.onclick = () => {
+      if (confirm('これまでの正誤の記録を全部消します。よろしいですか？')) {
+        store = { stats: {} }; save(); renderHome();
+      }
+    };
+    $('homeStats').appendChild(reset);
+  }
+}
+
+/* ---------- 出題 ---------- */
+function show(screen) {
+  ['home', 'play', 'result'].forEach(id => { $(id).hidden = id !== screen; });
+  window.scrollTo(0, 0);
+}
+
+function start(list) {
+  session = { list: list, i: 0, miss: [], okCount: 0 };
+  show('play');
+  renderQuestion();
+}
+
+function startFromSetting() {
+  let list = shuffle(pool(setting.range));
+  if (setting.count !== 'all') list = list.slice(0, setting.count);
+  start(list);
+}
+
+function makeOptions(w) {
+  const same = WORDS.filter(x => x.l === w.l && x.n !== w.n);
+  const others = shuffle(same).slice(0, 3).map(x => x.ja);
+  while (others.length < 3) {
+    const pick = WORDS[Math.floor(Math.random() * WORDS.length)].ja;
+    if (pick !== w.ja && !others.includes(pick)) others.push(pick);
+  }
+  return shuffle(others.concat([w.ja]));
+}
+
+function renderQuestion() {
+  const w = session.list[session.i];
+  $('playCat').textContent = w.l;
+  $('playPos').textContent = (session.i + 1) + ' / ' + session.list.length;
+  $('playFill').style.width = (session.i / session.list.length * 100) + '%';
+  $('playNum').textContent = 'No.' + w.n + (isWeak(w.en) ? '　苦手' : '');
+  $('playAnswer').innerHTML = '';
+  $('playOptions').innerHTML = '';
+  $('playControls').innerHTML = '';
+  $('playSay').innerHTML = '';
+
+  if (setting.mode === 'spell') renderSpell(w);
+  else if (setting.mode === 'flash') renderFlash(w);
+  else renderQuiz(w);
+}
+
+/* 英語を見て意味を思い出す */
+function renderFlash(w) {
+  $('playQ').className = 'qtext en';
+  $('playQ').textContent = w.en;
+  if (canSpeak()) $('playSay').appendChild(sayButton(w.en));
+
+  const reveal = document.createElement('button');
+  reveal.className = 'btn';
+  reveal.textContent = '意味を見る';
+  reveal.onclick = () => {
+    $('playAnswer').innerHTML = '<div class="answer">' + w.ja + '</div>';
+    const row = document.createElement('div');
+    row.className = 'btn-row';
+    const ok = document.createElement('button');
+    ok.className = 'btn';
+    ok.textContent = '○ できた';
+    ok.onclick = () => grade(w, true);
+    const ng = document.createElement('button');
+    ng.className = 'btn ghost';
+    ng.textContent = '× まちがえた';
+    ng.onclick = () => grade(w, false);
+    row.append(ok, ng);
+    $('playControls').innerHTML = '';
+    $('playControls').appendChild(row);
+  };
+  $('playControls').appendChild(reveal);
+}
+
+/* 英語を見て意味を4択で選ぶ */
+function renderQuiz(w) {
+  $('playQ').className = 'qtext en';
+  $('playQ').textContent = w.en;
+  if (canSpeak()) $('playSay').appendChild(sayButton(w.en));
+
+  const opts = makeOptions(w);
+  const box = $('playOptions');
+  opts.forEach((text, idx) => {
+    const b = document.createElement('button');
+    b.className = 'option';
+    b.innerHTML = '<span class="mark">' + (idx + 1) + '</span><span>' + text + '</span>';
+    b.onclick = () => {
+      const correct = text === w.ja;
+      Array.from(box.children).forEach((el, i) => {
+        el.disabled = true;
+        if (opts[i] === w.ja) el.classList.add('is-ok');
+        else if (i === idx) el.classList.add('is-ng');
+      });
+      if (!correct && navigator.vibrate) navigator.vibrate(40);
+      const judge = document.createElement('div');
+      judge.className = 'judge ' + (correct ? 'ok' : 'ng');
+      judge.innerHTML = correct
+        ? '<span class="big-mark">○</span>正解！'
+        : '<span class="big-mark">×</span>正解は<span class="right">' + w.ja + '</span>';
+      const next = document.createElement('button');
+      next.className = 'btn';
+      next.textContent = session.i + 1 < session.list.length ? '次の単語へ' : '結果を見る';
+      next.onclick = () => grade(w, correct);
+      $('playControls').append(judge, next);
+      next.focus();
+    };
+    box.appendChild(b);
+  });
+}
+
+/* 意味を見てスペルを書く */
+function renderSpell(w) {
+  $('playQ').className = 'qtext';
+  $('playQ').textContent = w.ja;
+
+  const box = document.createElement('form');
+  box.className = 'spell';
+  box.onsubmit = e => { e.preventDefault(); check(); };
+
+  const hint = document.createElement('div');
+  hint.className = 'hint';
+  hint.textContent = w.en.replace(/[A-Za-z]/g, '_').split('').join(' ');
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.autocapitalize = 'off';
+  input.autocorrect = 'off';
+  input.autocomplete = 'off';
+  input.spellcheck = false;
+  input.placeholder = 'ここに英語を入力';
+
+  const submit = document.createElement('button');
+  submit.className = 'btn';
+  submit.type = 'submit';
+  submit.textContent = 'こたえあわせ';
+
+  const giveup = document.createElement('button');
+  giveup.className = 'linkish';
+  giveup.type = 'button';
+  giveup.textContent = 'わからないので答えを見る';
+  giveup.onclick = () => finish(false, input.value);
+
+  box.append(hint, input, submit, giveup);
+  $('playControls').appendChild(box);
+  input.focus();
+
+  function check() {
+    finish(normalize(input.value) === normalize(w.en), input.value);
+  }
+
+  function finish(correct, typed) {
+    input.disabled = true;
+    submit.hidden = true;
+    giveup.hidden = true;
+    if (!correct && navigator.vibrate) navigator.vibrate(40);
+
+    $('playAnswer').innerHTML = '<div class="answer en">' + w.en + '</div>';
+    $('playSay').innerHTML = '';
+    if (canSpeak()) $('playSay').appendChild(sayButton(w.en));
+
+    const judge = document.createElement('div');
+    judge.className = 'judge ' + (correct ? 'ok' : 'ng');
+    judge.innerHTML = correct
+      ? '<span class="big-mark">○</span>正解！'
+      : '<span class="big-mark">×</span>ちがいます';
+    if (!correct && typed.trim()) {
+      const yours = document.createElement('span');
+      yours.className = 'yours';
+      yours.innerHTML = 'あなたの答え: <b>' + typed.trim() + '</b>';
+      judge.appendChild(yours);
+    }
+
+    const next = document.createElement('button');
+    next.className = 'btn';
+    next.textContent = session.i + 1 < session.list.length ? '次の単語へ' : '結果を見る';
+    next.onclick = () => grade(w, correct);
+
+    $('playControls').append(judge, next);
+    next.focus();
+  }
+}
+
+function grade(w, correct) {
+  const s = stat(w.en);
+  if (correct) { s.ok++; s.streak++; session.okCount++; }
+  else { s.ng++; s.streak = 0; session.miss.push(w); }
+  save();
+  session.i++;
+  if (session.i < session.list.length) renderQuestion();
+  else renderResult();
+}
+
+/* ---------- 結果 ---------- */
+function renderResult() {
+  show('result');
+  const total = session.list.length;
+  const ok = session.okCount;
+  const rate = Math.round(ok * 100 / total);
+  $('scoreBig').textContent = rate + '%';
+  $('scoreSub').textContent = total + '語中 ' + ok + '語 正解';
+  $('resultTitle').textContent = rate === 100 ? '全問正解！' : (rate >= 80 ? 'いい調子' : 'もう一周いこう');
+
+  const list = $('missList');
+  list.innerHTML = '';
+  if (session.miss.length === 0) {
+    $('missBlock').hidden = true;
+    $('againBtn').hidden = true;
+  } else {
+    $('missBlock').hidden = false;
+    $('againBtn').hidden = false;
+    $('againBtn').textContent = 'まちがえた' + session.miss.length + '語をもう一度';
+    session.miss.forEach(w => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = '<span class="n">' + w.n + '</span><span class="q">' + w.en + '</span><span class="a">' + w.ja + '</span>';
+      if (canSpeak()) {
+        const b = sayButton(w.en, '🔊');
+        row.appendChild(b);
+      }
+      list.appendChild(row);
+    });
+  }
+}
+
+/* ---------- 起動 ---------- */
+$('startBtn').onclick = startFromSetting;
+$('quitBtn').onclick = () => { renderHome(); show('home'); };
+$('homeBtn').onclick = () => { renderHome(); show('home'); };
+$('againBtn').onclick = () => start(shuffle(session.miss));
+
+renderHome();
+</script>
