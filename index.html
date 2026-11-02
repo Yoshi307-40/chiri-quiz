@@ -4,20 +4,20 @@
 <title>中学地理 一問一答71</title>
 <style>
   :root {
-    --ground: #ECEFE8;
-    --surface: #F8FAF5;
-    --surface-2: #E3E8DD;
+    --ground: #F3F7F1;
+    --surface: #FFFFFF;
+    --surface-2: #E6EEE4;
     --ink: #1B2420;
     --ink-soft: #57635C;
-    --line: #D0D7C9;
-    --accent: #14524B;
+    --line: #D8E2D4;
+    --accent: #1D6B5F;
     --accent-ink: #F8FAF5;
-    --accent-soft: #DAE6E1;
-    --contour: #9A5F27;
-    --ok: #2C6E49;
-    --ok-soft: #DCEBE0;
-    --ng: #A33A2A;
-    --ng-soft: #F1DED9;
+    --accent-soft: #D9EDE7;
+    --contour: #C9682F;
+    --ok: #1E8A52;
+    --ok-soft: #D6F2E0;
+    --ng: #C7452F;
+    --ng-soft: #FCE2DC;
     --radius: 10px;
     --font-display: "Yu Mincho", YuMincho, "Hiragino Mincho ProN", "Noto Serif JP", serif;
     --font-body: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", system-ui, sans-serif;
@@ -147,6 +147,12 @@
     width: 100%;
   }
   .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn.ghost.strong {
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    background: var(--surface);
+    font-weight: 600;
+  }
   .btn.small { font-size: .85rem; padding: .55rem .9rem; width: auto; }
   .btn-row { display: flex; gap: .6rem; }
   .btn-row > * { flex: 1; }
@@ -197,7 +203,8 @@
     border-top: 1px dashed var(--line);
     padding-top: 1rem;
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 1.75rem;
+    font-weight: 600;
     color: var(--accent);
     letter-spacing: .03em;
     animation: rise .22s ease-out;
@@ -219,13 +226,31 @@
     align-items: baseline;
   }
   .option .mark { font-family: var(--font-num); color: var(--ink-soft); font-size: .8rem; }
-  .option.is-ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .option.is-ok {
+    background: var(--ok-soft);
+    border-color: var(--ok);
+    border-width: 2px;
+    color: var(--ok);
+    font-weight: 700;
+  }
   .option.is-ng { background: var(--ng-soft); border-color: var(--ng); color: var(--ng); }
   .option:disabled { cursor: default; }
 
-  .judge { font-size: .9rem; display: flex; align-items: center; gap: .5rem; }
-  .judge.ok { color: var(--ok); }
-  .judge.ng { color: var(--ng); }
+  .judge {
+    font-size: 1.05rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    flex-wrap: wrap;
+    padding: .8rem 1rem;
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+  }
+  .judge .big-mark { font-size: 1.75rem; line-height: 1; }
+  .judge .right { font-family: var(--font-display); font-size: 1.2rem; }
+  .judge.ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
+  .judge.ng { color: var(--ng); background: var(--ng-soft); border-color: var(--ng); }
 
   /* ---- 結果画面 ---- */
   .score {
@@ -239,15 +264,16 @@
 
   .review { display: flex; flex-direction: column; gap: .1rem; }
   .review .row {
-    display: flex;
-    gap: .8rem;
-    padding: .7rem 0;
+    display: grid;
+    grid-template-columns: 2.2rem 1fr;
+    gap: .25rem .6rem;
+    padding: .75rem 0;
     border-bottom: 1px solid var(--line);
     font-size: .9rem;
   }
-  .review .row .n { font-family: var(--font-num); color: var(--contour); font-size: .78rem; padding-top: .25rem; }
-  .review .row .q { flex: 1; color: var(--ink-soft); }
-  .review .row .a { font-family: var(--font-display); color: var(--ink); white-space: nowrap; }
+  .review .row .n { font-family: var(--font-num); color: var(--contour); font-size: .78rem; grid-row: 1 / span 2; }
+  .review .row .q { color: var(--ink-soft); }
+  .review .row .a { font-family: var(--font-display); color: var(--accent); font-weight: 600; }
 
   .stats {
     display: flex;
@@ -326,7 +352,7 @@
     </div>
 
     <div id="playControls"></div>
-    <button class="linkish" id="quitBtn">やめてホームにもどる</button>
+    <button class="btn ghost strong" id="quitBtn">ホームにもどる</button>
   </section>
 
   <!-- 結果 -->
@@ -349,7 +375,7 @@
     <div class="btn-row">
       <button class="btn" id="againBtn">まちがえた問題をもう一度</button>
     </div>
-    <button class="btn ghost" id="homeBtn">ホームにもどる</button>
+    <button class="btn ghost strong" id="homeBtn">ホームにもどる</button>
   </section>
 
 </div>
@@ -563,12 +589,12 @@ function startFromSetting() {
 }
 
 function makeOptions(q) {
-  const same = QUESTIONS.filter(x => x.c === q.c && x.n !== q.n);
-  const others = shuffle(same).slice(0, 3).map(x => x.a);
-  while (others.length < 3) {
-    const pick = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)].a;
-    if (pick !== q.a && !others.includes(pick)) others.push(pick);
-  }
+  const others = [];
+  const add = a => {
+    if (a !== q.a && others.indexOf(a) < 0 && others.length < 3) others.push(a);
+  };
+  shuffle(QUESTIONS.filter(x => x.c === q.c)).forEach(x => add(x.a));
+  shuffle(QUESTIONS).forEach(x => add(x.a));
   return shuffle(others.concat([q.a]));
 }
 
@@ -627,7 +653,9 @@ function renderQuiz(q) {
       if (!correct && navigator.vibrate) navigator.vibrate(40);
       const judge = document.createElement('div');
       judge.className = 'judge ' + (correct ? 'ok' : 'ng');
-      judge.textContent = correct ? '○ 正解' : '× 正解は「' + q.a + '」';
+      judge.innerHTML = correct
+        ? '<span class="big-mark">○</span>正解！'
+        : '<span class="big-mark">×</span>正解は<span class="right">' + q.a + '</span>';
       const next = document.createElement('button');
       next.className = 'btn';
       next.textContent = session.i + 1 < session.list.length ? '次の問題へ' : '結果を見る';
