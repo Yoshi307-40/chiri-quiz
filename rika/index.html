@@ -276,6 +276,38 @@
   .option.is-ng { background: rgba(251, 113, 133, .12); border-color: var(--ng); color: var(--ng); }
   .option:disabled { cursor: default; }
 
+  /* ---- 計算問題 ---- */
+  .calcform { display: flex; flex-direction: column; gap: .7rem; }
+  .calcrow { display: flex; gap: .6rem; align-items: center; }
+  .calcrow input {
+    flex: 1;
+    font-family: var(--font-num);
+    font-size: 1.35rem;
+    padding: .75rem .8rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--ink);
+    text-align: right;
+    min-width: 0;
+  }
+  .calcrow input:focus { border-color: var(--accent); outline: none; }
+  .calcrow .unit {
+    font-family: var(--font-num);
+    font-size: 1.05rem;
+    color: var(--ink-dim);
+    min-width: 3.4rem;
+  }
+  .expl {
+    font-size: .85rem;
+    color: var(--ink-dim);
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: .75rem .9rem;
+    line-height: 1.95;
+  }
+  .expl b { color: var(--accent); font-weight: 700; }
+
   .judge {
     display: flex;
     align-items: center;
@@ -290,6 +322,8 @@
   .judge .big-mark { font-size: 1.7rem; line-height: 1; }
   .judge .right { font-weight: 800; }
   .judge .xp { font-family: var(--font-num); font-size: .78rem; margin-left: auto; opacity: .9; }
+  .yours { font-size: .78rem; color: var(--ink-dim); font-weight: 500; width: 100%; }
+  .yours b { color: var(--ng); font-weight: 700; font-family: var(--font-num); }
   .judge.ok { color: var(--ok); background: rgba(74, 222, 128, .12); border-color: var(--ok); }
   .judge.ng { color: var(--ng); background: rgba(251, 113, 133, .1); border-color: var(--ng); }
 
@@ -636,6 +670,115 @@ const TESTS = {
   test2: { label: '11/5のテスト範囲', cats: ['C', 'D'] }
 };
 
+/* ===========================================================
+   計算問題。出すたびに数値を作り直すので、同じ問題は続かない。
+   kid は記録用のタイプ番号（問題文が毎回変わるため）。
+   =========================================================== */
+const CALC_CATS = { E: '密度の計算', F: '溶解度の計算' };
+
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function round1(x) { return Math.round(x * 10) / 10; }
+function fmt(x) { return String(Math.round(x * 100) / 100); }
+
+/* 中学の教科書で使われる代表的な値 */
+const METALS = [
+  { name: 'アルミニウム', d: 2.7 },
+  { name: '鉄',           d: 7.9 },
+  { name: '銅',           d: 9.0 },
+  { name: '鉛',           d: 11.3 }
+];
+const STUFF = METALS.concat([
+  { name: '氷',         d: 0.9 },
+  { name: 'エタノール', d: 0.8 }
+]);
+const SOLUBILITY = {
+  '硝酸カリウム': { lo: 20, hi: 60, loV: 32, hiV: 109 },
+  'ミョウバン':   { lo: 20, hi: 60, loV: 11, hiV: 57 }
+};
+
+function calcDensity() {
+  const t = Math.floor(Math.random() * 4);
+  const m = pick(t === 3 ? METALS : STUFF);
+  const v = pick([10, 20, 25, 50]);
+  const mass = round1(m.d * v);
+
+  if (t === 0) {
+    return { c: 'E', kid: 'E1', unit: 'g/cm³', tol: 0.05, val: m.d,
+      q: '質量' + mass + ' g、体積' + v + ' cm³ の物体の密度は何 g/cm³ ですか。',
+      a: fmt(m.d),
+      expl: '密度＝質量÷体積<br>＝' + mass + ' ÷ ' + v + ' ＝ <b>' + m.d + ' g/cm³</b>' };
+  }
+  if (t === 1) {
+    return { c: 'E', kid: 'E2', unit: 'g', tol: 0.05, val: mass,
+      q: '密度' + m.d + ' g/cm³ の' + m.name + 'が ' + v + ' cm³ あります。質量は何 g ですか。',
+      a: fmt(mass),
+      expl: '質量＝密度×体積<br>＝' + m.d + ' × ' + v + ' ＝ <b>' + mass + ' g</b>' };
+  }
+  if (t === 2) {
+    return { c: 'E', kid: 'E3', unit: 'cm³', tol: 0.05, val: v,
+      q: '密度' + m.d + ' g/cm³ の' + m.name + 'が ' + mass + ' g あります。体積は何 cm³ ですか。',
+      a: fmt(v),
+      expl: '体積＝質量÷密度<br>＝' + mass + ' ÷ ' + m.d + ' ＝ <b>' + v + ' cm³</b>' };
+  }
+  const others = shuffle(METALS.filter(x => x.name !== m.name)).slice(0, 3).map(x => x.name);
+  return { c: 'E', kid: 'E4', choice: true, val: null,
+    q: '質量' + mass + ' g、体積' + v + ' cm³ の金属があります。この金属は何ですか。',
+    a: m.name,
+    options: shuffle(others.concat([m.name])),
+    expl: '密度＝' + mass + ' ÷ ' + v + ' ＝ ' + m.d + ' g/cm³<br>この値になるのは <b>' + m.name + '</b>' };
+}
+
+function calcSolution() {
+  const t = Math.floor(Math.random() * 4);
+
+  if (t === 0) {
+    const total = pick([100, 200]);
+    const pct = pick([5, 10, 20, 25, 40]);
+    const a = total * pct / 100;
+    return { c: 'F', kid: 'F1', unit: '%', tol: 0.05, val: pct,
+      q: '水 ' + (total - a) + ' g に食塩 ' + a + ' g をとかしました。この食塩水の質量パーセント濃度は何 % ですか。',
+      a: fmt(pct),
+      expl: '食塩水全体＝' + (total - a) + ' ＋ ' + a + ' ＝ ' + total + ' g<br>濃度＝溶質 ÷ 食塩水全体 × 100<br>＝' + a + ' ÷ ' + total + ' × 100 ＝ <b>' + pct + ' %</b>' };
+  }
+  if (t === 1) {
+    const total = pick([100, 150, 200, 300]);
+    const pct = pick([5, 10, 20]);
+    const a = total * pct / 100;
+    return { c: 'F', kid: 'F2', unit: 'g', tol: 0.05, val: a,
+      q: pct + ' % の食塩水 ' + total + ' g には、食塩が何 g とけていますか。',
+      a: fmt(a),
+      expl: '溶質＝食塩水全体 × 濃度 ÷ 100<br>＝' + total + ' × ' + pct + ' ÷ 100 ＝ <b>' + a + ' g</b>' };
+  }
+  if (t === 2) {
+    const pct = pick([10, 20, 25]);
+    const a = pick([10, 20, 30, 40]);
+    const total = a * 100 / pct;
+    return { c: 'F', kid: 'F3', unit: 'g', tol: 0.05, val: total - a,
+      q: pct + ' % の食塩水をつくります。食塩 ' + a + ' g をとかすとき、水は何 g 必要ですか。',
+      a: fmt(total - a),
+      expl: '食塩水全体＝' + a + ' ÷ ' + (pct / 100) + ' ＝ ' + total + ' g<br>水＝' + total + ' − ' + a + ' ＝ <b>' + (total - a) + ' g</b>' };
+  }
+  const name = pick(Object.keys(SOLUBILITY));
+  const s = SOLUBILITY[name];
+  const water = pick([50, 100, 200]);
+  const out = round1((s.hiV - s.loV) * water / 100);
+  return { c: 'F', kid: 'F4', unit: 'g', tol: 0.5, val: out,
+    q: s.hi + '℃ の水 ' + water + ' g に' + name + 'をとけるだけとかし、' + s.lo + '℃ まで冷やしました。出てくる結晶は何 g ですか。（水100gへの溶解度は ' + s.hi + '℃で ' + s.hiV + ' g、' + s.lo + '℃で ' + s.loV + ' g）',
+    a: fmt(out),
+    expl: '水100g なら ' + s.hiV + ' − ' + s.loV + ' ＝ ' + (s.hiV - s.loV) + ' g 出てくる<br>水' + water + 'g では ' + (s.hiV - s.loV) + ' × ' + water + ' ÷ 100 ＝ <b>' + out + ' g</b>' };
+}
+
+function makeCalcList(range, n) {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const q = range === 'calcE' ? calcDensity() : calcSolution();
+    q.n = i + 1;
+    q.calc = true;
+    out.push(q);
+  }
+  return out;
+}
+
 
 const KEY = 'rika-kagaku.v2';
 const OLD_KEY = 'rika-kagaku.v1';
@@ -645,7 +788,7 @@ const $ = id => document.getElementById(id);
 function blank() {
   return {
     v: 2, stats: {}, xp: 0, badges: {}, maxCombo: 0,
-    totalAnswered: 0, totalCorrect: 0, perfectRuns: 0,
+    totalAnswered: 0, totalCorrect: 0, perfectRuns: 0, calcCorrect: 0,
     streakDays: 0, lastDay: '', sound: true
   };
 }
@@ -732,7 +875,9 @@ const BADGES = [
   { id: 'catA',    ico: '🧪', name: '物質 制覇',    desc: '身のまわりの物質を全問正解', test: () => catDone('A') },
   { id: 'catB',    ico: '💨', name: '気体 制覇',    desc: '気体の性質を全問正解',       test: () => catDone('B') },
   { id: 'catC',    ico: '💧', name: '水溶液 制覇',  desc: '水溶液の性質を全問正解',     test: () => catDone('C') },
-  { id: 'catD',    ico: '❄️', name: '状態変化 制覇', desc: '物質の姿と状態変化を全問正解', test: () => catDone('D') }
+  { id: 'catD',    ico: '❄️', name: '状態変化 制覇', desc: '物質の姿と状態変化を全問正解', test: () => catDone('D') },
+  { id: 'calc30',  ico: '🧮', name: '計算30問',    desc: '計算問題を30問正解', test: () => store.calcCorrect >= 30 },
+  { id: 'calc100', ico: '📐', name: '計算100問',   desc: '計算問題を100問正解', test: () => store.calcCorrect >= 100 }
 ];
 function checkBadges() {
   const got = [];
@@ -777,12 +922,16 @@ function shuffle(arr) {
   }
   return a;
 }
+function isCalcRange(range) { return range === 'calcE' || range === 'calcF'; }
 function pool(range) {
+  if (isCalcRange(range)) return makeCalcList(range, 20);
   if (range === 'all') return QUESTIONS.slice();
   if (range === 'weak') return weakList();
   if (TESTS[range]) return QUESTIONS.filter(q => TESTS[range].cats.indexOf(q.c) >= 0);
   return QUESTIONS.filter(q => q.c === range);
 }
+/* 計算問題は問題文が毎回変わるので、記録はタイプ番号で取る */
+function qkey(q) { return q.kid || q.q; }
 
 /* ---------- ホーム ---------- */
 function renderHud() {
@@ -816,6 +965,8 @@ function renderHome() {
   const ranges = [
     { key: 'test2', label: TESTS.test2.label },
     { key: 'test1', label: TESTS.test1.label },
+    { key: 'calcE', label: CALC_CATS.E, calc: true },
+    { key: 'calcF', label: CALC_CATS.F, calc: true },
     { key: 'all', label: '全部' },
     { key: 'A', label: CATS.A },
     { key: 'B', label: CATS.B },
@@ -826,11 +977,11 @@ function renderHome() {
   const rc = $('rangeChoices');
   rc.innerHTML = '';
   ranges.forEach(r => {
-    const n = pool(r.key).length;
+    const n = r.calc ? 20 : pool(r.key).length;
     const b = document.createElement('button');
     b.className = 'chip';
     b.setAttribute('aria-pressed', String(setting.range === r.key));
-    b.innerHTML = '<span>' + r.label + '</span><span class="count">' + n + '</span>';
+    b.innerHTML = '<span>' + r.label + '</span>' + (r.calc ? '' : '<span class="count">' + n + '</span>');
     b.disabled = n === 0;
     b.onclick = () => { setting.range = r.key; renderHome(); };
     rc.appendChild(b);
@@ -850,12 +1001,14 @@ function renderHome() {
     cc.appendChild(b);
   });
 
+  /* 計算問題は入力して答えるので、「やり方」は選べない */
+  $('modeChoices').parentElement.hidden = isCalcRange(setting.range);
   Array.from($('modeChoices').children).forEach(b => {
     b.setAttribute('aria-pressed', String(b.dataset.mode === setting.mode));
     b.onclick = () => { setting.mode = b.dataset.mode; renderHome(); };
   });
 
-  const done = Object.keys(store.stats).length;
+  const done = QUESTIONS.filter(q => store.stats[q.q]).length;
   const rate = store.totalAnswered ? Math.round(store.totalCorrect * 100 / store.totalAnswered) : 0;
   $('homeStats').innerHTML =
     '<span><b>' + rate + '%</b>これまでの正答率</span>' +
@@ -905,24 +1058,120 @@ function renderCombo(pop) {
 
 function renderQuestion() {
   const q = session.list[session.i];
-  $('playCat').textContent = CATS[q.c];
+  $('playCat').textContent = CATS[q.c] || CALC_CATS[q.c];
   $('playPos').textContent = (session.i + 1) + ' / ' + session.list.length;
   $('playFill').style.width = (session.i / session.list.length * 100) + '%';
-  $('playNum').textContent = 'No.' + q.n + (isWeak(q.q) ? '　苦手' : '');
+  $('playNum').textContent = (q.calc ? '計算 ' : 'No.') + q.n + (isWeak(qkey(q)) ? '　苦手' : '');
   $('playQ').textContent = q.q;
   $('playAnswer').innerHTML = '';
   $('playOptions').innerHTML = '';
   $('playControls').innerHTML = '';
   renderCombo(false);
 
-  if (setting.mode === 'flash') renderFlash(q);
+  if (q.calc) renderCalc(q);
+  else if (setting.mode === 'flash') renderFlash(q);
   else renderQuiz(q);
+}
+
+/* 計算問題。数値を入力するか、選択肢から選ぶ。答え合わせのあと式を出す */
+function renderCalc(q) {
+  const finish = (correct, typed) => {
+    const gained = answer(q, correct);
+    renderCombo(true);
+
+    const judge = document.createElement('div');
+    judge.className = 'judge ' + (correct ? 'ok' : 'ng');
+    judge.innerHTML = correct
+      ? '<span class="big-mark">○</span>正解！<span class="xp">+' + gained + ' XP</span>'
+      : '<span class="big-mark">×</span>正解は<span class="right">' + q.a + (q.unit ? ' ' + q.unit : '') + '</span>';
+    if (!correct && typed) {
+      const yours = document.createElement('span');
+      yours.className = 'yours';
+      yours.innerHTML = 'きみの答え: <b>' + typed + '</b>';
+      judge.appendChild(yours);
+    }
+
+    const expl = document.createElement('div');
+    expl.className = 'expl';
+    expl.innerHTML = q.expl;
+
+    const nx = document.createElement('button');
+    nx.className = 'btn';
+    nx.textContent = session.i + 1 < session.list.length ? '次の問題へ' : '結果を見る';
+    nx.onclick = next;
+
+    $('playControls').append(judge, expl, nx);
+    nx.focus();
+  };
+
+  if (q.choice) {
+    const box = $('playOptions');
+    q.options.forEach((text, idx) => {
+      const b = document.createElement('button');
+      b.className = 'option';
+      b.innerHTML = '<span class="mark">' + (idx + 1) + '</span><span>' + text + '</span>';
+      b.onclick = () => {
+        Array.from(box.children).forEach((el, i) => {
+          el.disabled = true;
+          if (q.options[i] === q.a) el.classList.add('is-ok');
+          else if (i === idx) el.classList.add('is-ng');
+        });
+        finish(text === q.a, text);
+      };
+      box.appendChild(b);
+    });
+    return;
+  }
+
+  const form = document.createElement('form');
+  form.className = 'calcform';
+
+  const row = document.createElement('div');
+  row.className = 'calcrow';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.inputMode = 'decimal';
+  input.autocomplete = 'off';
+  input.placeholder = '答え';
+  const unit = document.createElement('span');
+  unit.className = 'unit';
+  unit.textContent = q.unit;
+  row.append(input, unit);
+
+  const submit = document.createElement('button');
+  submit.className = 'btn';
+  submit.type = 'submit';
+  submit.textContent = 'こたえあわせ';
+
+  const giveup = document.createElement('button');
+  giveup.className = 'btn quiet';
+  giveup.type = 'button';
+  giveup.textContent = 'わからない';
+
+  const done = (correct, typed) => {
+    input.disabled = true;
+    submit.hidden = true;
+    giveup.hidden = true;
+    finish(correct, typed);
+  };
+  form.onsubmit = e => {
+    e.preventDefault();
+    const typed = input.value.trim();
+    const num = parseFloat(typed.replace(/[^0-9.\-]/g, ''));
+    done(isFinite(num) && Math.abs(num - q.val) <= q.tol, typed);
+  };
+  giveup.onclick = () => done(false, input.value.trim());
+
+  form.append(row, submit, giveup);
+  $('playControls').appendChild(form);
+  input.focus();
 }
 
 /* 記録・音・コンボ・レベル。画面は進めない */
 function answer(q, correct) {
-  const s = stat(q.q);
+  const s = stat(qkey(q));
   store.totalAnswered++;
+  if (correct && q.calc) store.calcCorrect++;
   const before = levelOf(store.xp).level;
 
   if (correct) {
