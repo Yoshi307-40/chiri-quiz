@@ -8,13 +8,13 @@
     --bg: #2B3B4D;
     --inset: #1C2836;
     --surface: #37495D;
-    --surface-2: #44586E;
+    --surface-2: #3E5165;
     --line: #5E768D;
     --ink: #E8EFF6;
     --ink-dim: #C2D0DC;
-    --accent: #22D3EE;
-    --accent-glow: rgba(34, 211, 238, .45);
-    --accent-dim: rgba(34, 211, 238, .12);
+    --accent: #FDBA74;
+    --accent-glow: rgba(253, 186, 116, .45);
+    --accent-dim: rgba(253, 186, 116, .12);
     --ok: #4ADE80;
     --ok-glow: rgba(74, 222, 128, .4);
     --ng: #FB7185;
@@ -30,7 +30,7 @@
     margin: 0;
     background: var(--bg);
     background-image:
-      radial-gradient(900px 500px at 50% -10%, rgba(34, 211, 238, .10), transparent 70%);
+      radial-gradient(900px 500px at 50% -10%, rgba(253, 186, 116, .10), transparent 70%);
     background-attachment: fixed;
     color: var(--ink);
     font-family: var(--font-ui);
@@ -78,7 +78,7 @@
   }
   .hud .xpfill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), #A5F3FC);
+    background: linear-gradient(90deg, var(--accent), #FFD9B0);
     box-shadow: 0 0 12px var(--accent-glow);
     transition: width .4s ease;
   }
@@ -151,8 +151,8 @@
     font-weight: 700;
     border-radius: var(--radius);
     border: none;
-    background: linear-gradient(135deg, var(--accent), #0891B2);
-    color: #04161B;
+    background: linear-gradient(135deg, var(--accent), #F97316);
+    color: #2B1403;
     padding: .95rem 1rem;
     cursor: pointer;
     width: 100%;
@@ -209,7 +209,7 @@
   .track { height: 4px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
   .track .fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), #A5F3FC);
+    background: linear-gradient(90deg, var(--accent), #FFD9B0);
     box-shadow: 0 0 10px var(--accent-glow);
     transition: width .3s ease;
   }
